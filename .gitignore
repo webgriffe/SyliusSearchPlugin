@@ -7,13 +7,11 @@
 
 /tests/Application/yarn.lock
 
+/.phpunit.result.cache
 /behat.yml
 /phpspec.yml
+/phpunit.xml
 
-/package-lock.json
-
-/.php_cs.cache
+# Symfony CLI https://symfony.com/doc/current/setup/symfony_server.html#different-php-settings-per-project
 /.php-version
-/.phpunit.result.cache
-/node_modules
-
+/php.ini
