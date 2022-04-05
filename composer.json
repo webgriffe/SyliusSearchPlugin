@@ -5,8 +5,8 @@
     "description": "A search plugin using Elasticsearch for Sylius.",
     "license": "MIT",
     "require": {
-        "php": "^7.2 || ^8.0",
-        "sylius/sylius": "^1.4",
+        "php": "^8.0",
+        "sylius/sylius": "^1.11",
         "jolicode/elastically": "^1.0.0"
     },
     "require-dev": {
@@ -58,6 +58,14 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "symfony/thanks": true,
+            "ergebnis/composer-normalize": true,
+            "symfony/flex": true
         }
     }
 }
