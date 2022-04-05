@@ -1,21 +1,6 @@
-<p align="center">
-    <a href="https://monsieurbiz.com" target="_blank">
-        <img src="https://monsieurbiz.com/logo.png" width="250px" alt="Monsieur Biz logo" />
-    </a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="https://monsieurbiz.com/agence-web-experte-sylius" target="_blank">
-        <img src="https://demo.sylius.com/assets/shop/img/logo.png" width="200px" alt="Sylius logo" />
-    </a>
-    <br/>
-    <img src="https://monsieurbiz.com/assets/images/sylius_badge_extension-artisan.png" width="100" alt="Monsieur Biz is a Sylius Extension Artisan partner">
-</p>
+<h1 align="center">Webgriffe/SyliusSearchPlugin</h1>
 
-<h1 align="center">Search</h1>
-
-[![Search Plugin license](https://img.shields.io/github/license/monsieurbiz/SyliusSearchPlugin?public)](https://github.com/monsieurbiz/SyliusSearchPlugin/blob/master/LICENSE.txt)
-[![Build Status](https://img.shields.io/github/workflow/status/monsieurbiz/SyliusSearchPlugin/PHP%20Composer)](https://github.com/monsieurbiz/SyliusSearchPlugin/actions?query=workflow%3A%22PHP+Composer%22)
-
-A search plugin for Sylius using [Jane](https://github.com/janephp/janephp) and [Elastically](https://github.com/jolicode/elastically).
+A fork of the original [SyliusSearchPlugin](https://github.com/monsieurbiz/SyliusSearchPlugin) to maintain the version 1.
 
 ## Features
 
