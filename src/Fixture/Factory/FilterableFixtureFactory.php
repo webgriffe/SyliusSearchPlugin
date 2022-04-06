@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Fixture\Factory;
 
+use Exception;
 use MonsieurBiz\SyliusSearchPlugin\Entity\Product\FilterableInterface;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\AbstractExampleFactory;
 use Sylius\Bundle\CoreBundle\Fixture\OptionsResolver\LazyOption;
@@ -73,7 +74,7 @@ class FilterableFixtureFactory extends AbstractExampleFactory implements Filtera
     /**
      * @param array $options
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return object
      */
@@ -81,20 +82,20 @@ class FilterableFixtureFactory extends AbstractExampleFactory implements Filtera
     {
         $options = $this->optionsResolver->resolve($options);
 
-        if (isset($options['attribute']) && count($options['attribute']) > 0) {
+        if (isset($options['attribute'])) {
             $object = $options['attribute'];
-        } elseif (isset($options['option']) && count($options['option']) > 0) {
+        } elseif (isset($options['option'])) {
             $object = $options['option'];
         } else {
-            throw new \Exception('You need to specify an attribute or an option to be filterable.');
+            throw new Exception('You need to specify an attribute or an option to be filterable.');
         }
 
         if (!$object instanceof FilterableInterface) {
-            throw new \Exception(sprintf('Your class "%s" is not an instance of %s', \get_class($object), FilterableInterface::class));
+            throw new Exception(sprintf('Your class "%s" is not an instance of %s', \get_class($object), FilterableInterface::class));
         }
 
         /** @var FilterableInterface $object */
-        $object->setFilterable(((bool) $options['filterable']) ?? false);
+        $object->setFilterable(($options['filterable']) ?? false);
 
         return $object;
     }
