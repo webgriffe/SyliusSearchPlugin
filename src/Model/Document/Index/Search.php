@@ -125,7 +125,6 @@ class Search extends AbstractIndex
     private function query(GridConfig $gridConfig, array $query)
     {
         try {
-            /** @var ElasticaResultSet $results */
             $results = $this->getClient()->getIndex($this->getIndexName($gridConfig->getLocale()))->search(
                 $query, $gridConfig->getLimit()
             );

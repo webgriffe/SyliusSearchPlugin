@@ -5,11 +5,45 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    errorBaseline="psalm-baseline.xml"
 >
     <projectFiles>
         <directory name="src" />
         <ignoreFiles>
             <directory name="vendor" />
+            <directory name="src/generated" />
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <MixedMethodCall>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/Configuration.php" />
+            </errorLevel>
+        </MixedMethodCall>
+        <PossiblyNullReference>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/Configuration.php" />
+            </errorLevel>
+        </PossiblyNullReference>
+        <PossiblyUndefinedMethod>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/Configuration.php" />
+            </errorLevel>
+        </PossiblyUndefinedMethod>
+        <MixedArrayAccess>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/MonsieurBizSyliusSearchExtension.php" />
+            </errorLevel>
+        </MixedArrayAccess>
+        <MixedArgument>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/MonsieurBizSyliusSearchExtension.php" />
+            </errorLevel>
+        </MixedArgument>
+        <UnusedMethodCall>
+            <errorLevel type="suppress">
+                <file name="src/DependencyInjection/Configuration.php" />
+            </errorLevel>
+        </UnusedMethodCall>
+    </issueHandlers>
 </psalm>

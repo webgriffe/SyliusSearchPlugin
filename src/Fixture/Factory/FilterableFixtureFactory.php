@@ -94,7 +94,6 @@ class FilterableFixtureFactory extends AbstractExampleFactory implements Filtera
             throw new Exception(sprintf('Your class "%s" is not an instance of %s', \get_class($object), FilterableInterface::class));
         }
 
-        /** @var FilterableInterface $object */
         $object->setFilterable(($options['filterable']) ?? false);
 
         return $object;

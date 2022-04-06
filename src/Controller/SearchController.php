@@ -106,7 +106,6 @@ class SearchController extends AbstractController
         $this->gridConfig->init(GridConfig::SEARCH_TYPE, $request);
 
         // Perform search
-        /** @var ResultSet $resultSet */
         $resultSet = $this->documentSearch->search($this->gridConfig);
 
         // Redirect to document if only one result and no filter applied
@@ -154,7 +153,6 @@ class SearchController extends AbstractController
         $this->gridConfig->init(GridConfig::INSTANT_TYPE, $request);
 
         // Perform instant search
-        /** @var ResultSet $resultSet */
         $resultSet = $this->documentSearch->instant($this->gridConfig);
 
         // Display instant result list
@@ -180,7 +178,6 @@ class SearchController extends AbstractController
         $this->gridConfig->init(GridConfig::TAXON_TYPE, $request, $this->taxonContext->getTaxon());
 
         // Perform search
-        /** @var ResultSet $resultSet */
         $resultSet = $this->documentSearch->taxon($this->gridConfig);
 
         // Get number formatter for currency

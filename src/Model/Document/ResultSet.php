@@ -246,7 +246,6 @@ class ResultSet
                     continue;
                 }
                 $taxonCode = $taxonCodeBucket['key'];
-                $taxonName = null;
 
                 // Get taxon level in aggregation
                 $taxonLevelBuckets = $taxonCodeBucket['levels']['buckets'] ?? [];
@@ -290,7 +289,6 @@ class ResultSet
                     continue;
                 }
                 $taxonCode = $taxonCodeBucket['key'];
-                $taxonName = null;
 
                 // Get main taxon level in aggregation
                 $taxonLevelBuckets = $taxonCodeBucket['levels']['buckets'] ?? [];

@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.7.1@cd53e047a58f71f646dd6bf45476076ab07b5d44">
+  <file src="src/Command/PopulateCommand.php">
+    <NonInvariantDocblockPropertyType occurrences="1">
+      <code>$defaultName</code>
+    </NonInvariantDocblockPropertyType>
+  </file>
+  <file src="src/Context/RequestTaxonContext.php">
+    <InternalMethod occurrences="1">
+      <code>get</code>
+    </InternalMethod>
+  </file>
+  <file src="src/Controller/SearchController.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>SearchController</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/DependencyInjection/MonsieurBizSyliusSearchExtension.php">
+    <MixedAssignment occurrences="1">
+      <code>$value</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Fixture/Factory/FilterableFixtureFactory.php">
+    <MixedArgument occurrences="2">
+      <code>$object</code>
+      <code>($options['filterable']) ?? false</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="1">
+      <code>$object</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Fixture/FilterableFixture.php">
+    <MixedMethodCall occurrences="4">
+      <code>booleanNode</code>
+      <code>defaultValue</code>
+      <code>end</code>
+      <code>end</code>
+    </MixedMethodCall>
+    <PossiblyNullReference occurrences="1">
+      <code>scalarNode</code>
+    </PossiblyNullReference>
+    <PossiblyUndefinedMethod occurrences="1">
+      <code>scalarNode</code>
+    </PossiblyUndefinedMethod>
+  </file>
+  <file src="src/Helper/AggregationHelper.php">
+    <MixedArgument occurrences="1">
+      <code>$field</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="1">
+      <code>$field</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Helper/FilterHelper.php">
+    <MixedArgument occurrences="6">
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$values</code>
+      <code>$values</code>
+      <code>$values</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="4">
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$values</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Helper/RenderDocumentUrlHelper.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$document-&gt;getType()</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Model/Config/FilesConfig.php">
+    <MixedAssignment occurrences="3">
+      <code>$this-&gt;instantPath</code>
+      <code>$this-&gt;searchPath</code>
+      <code>$this-&gt;taxonPath</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Model/Config/GridConfig.php">
+    <InternalMethod occurrences="12">
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+    </InternalMethod>
+    <MixedArgument occurrences="8">
+      <code>$availableSorting</code>
+      <code>$availableSorting</code>
+      <code>$request-&gt;get('query')</code>
+      <code>$request-&gt;get('query')</code>
+      <code>$request-&gt;get('sorting')</code>
+      <code>$request-&gt;get('sorting')</code>
+      <code>$this-&gt;limits</code>
+      <code>$this-&gt;limits</code>
+    </MixedArgument>
+    <MixedArrayAssignment occurrences="2">
+      <code>$this-&gt;appliedFilters['price']</code>
+      <code>$this-&gt;appliedFilters['price']</code>
+    </MixedArrayAssignment>
+    <MixedAssignment occurrences="14">
+      <code>$availableSorting</code>
+      <code>$availableSorting</code>
+      <code>$order</code>
+      <code>$priceFilter</code>
+      <code>$priceFilter</code>
+      <code>$this-&gt;appliedFilters</code>
+      <code>$this-&gt;appliedFilters</code>
+      <code>$this-&gt;appliedFilters</code>
+      <code>$this-&gt;appliedFilters</code>
+      <code>$this-&gt;limit</code>
+      <code>$this-&gt;limit</code>
+      <code>$this-&gt;limit</code>
+      <code>$this-&gt;limits</code>
+      <code>$this-&gt;limits</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="2">
+      <code>bool</code>
+      <code>bool</code>
+    </MixedInferredReturnType>
+    <MixedPropertyTypeCoercion occurrences="3">
+      <code>$this-&gt;cleanSorting($request-&gt;get('sorting'), $availableSorting)</code>
+      <code>$this-&gt;cleanSorting($request-&gt;get('sorting'), $availableSorting)</code>
+      <code>$this-&gt;sorting</code>
+    </MixedPropertyTypeCoercion>
+    <MixedReturnStatement occurrences="2">
+      <code>$this-&gt;config['filters']['apply_manually'] ?? false</code>
+      <code>$this-&gt;config['filters']['use_main_taxon'] ?? false</code>
+    </MixedReturnStatement>
+    <MixedReturnTypeCoercion occurrences="4">
+      <code>$this-&gt;filterableAttributes</code>
+      <code>$this-&gt;filterableOptions</code>
+      <code>string[]</code>
+      <code>string[]</code>
+    </MixedReturnTypeCoercion>
+    <PropertyNotSetInConstructor occurrences="8">
+      <code>$appliedFilters</code>
+      <code>$limit</code>
+      <code>$limits</code>
+      <code>$locale</code>
+      <code>$page</code>
+      <code>$query</code>
+      <code>$sorting</code>
+      <code>$type</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Model/Document/Filter.php">
+    <MissingParamType occurrences="2">
+      <code>$count</code>
+      <code>$value</code>
+    </MissingParamType>
+    <MixedArgument occurrences="2">
+      <code>$count</code>
+      <code>$value</code>
+    </MixedArgument>
+  </file>
+  <file src="src/Model/Document/Index/AbstractIndex.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$documentRepositoryProvider</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Model/Document/Index/Indexer.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$subject-&gt;convertToDocument($locale)</code>
+      <code>$subject-&gt;convertToDocument($locale)</code>
+    </ArgumentTypeCoercion>
+    <InvalidArgument occurrences="2">
+      <code>$convertToDocument</code>
+      <code>$document</code>
+    </InvalidArgument>
+    <MixedArgument occurrences="3">
+      <code>$locale</code>
+      <code>$locale</code>
+      <code>$locale</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="5">
+      <code>$documents</code>
+      <code>$locale</code>
+      <code>$locale</code>
+      <code>$locale</code>
+      <code>$repository</code>
+    </MixedAssignment>
+    <MixedMethodCall occurrences="1">
+      <code>findAll</code>
+    </MixedMethodCall>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>isInstanceOf</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+  <file src="src/Model/Document/Index/Search.php">
+    <MixedArgument occurrences="4">
+      <code>$appliedFilters['bool']['filter']</code>
+      <code>$appliedFilters['bool']['filter']</code>
+      <code>$query['query']['bool']['filter']</code>
+      <code>$query['query']['bool']['filter']</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion occurrences="2">
+      <code>$field</code>
+      <code>$field</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAccess occurrences="2">
+      <code>$query['query']['bool']</code>
+      <code>$query['query']['bool']</code>
+    </MixedArrayAccess>
+    <MixedArrayAssignment occurrences="4">
+      <code>$query['query']['bool']</code>
+      <code>$query['query']['bool']</code>
+      <code>$query['sort'][]</code>
+      <code>$query['sort'][]</code>
+    </MixedArrayAssignment>
+    <MixedInferredReturnType occurrences="1">
+      <code>array</code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement occurrences="1">
+      <code>Yaml::parse($query)</code>
+    </MixedReturnStatement>
+    <PossiblyFalseArgument occurrences="2">
+      <code>$query</code>
+      <code>$query</code>
+    </PossiblyFalseArgument>
+    <PossiblyNullArgument occurrences="7">
+      <code>$channelCode</code>
+      <code>$channelCode</code>
+      <code>$gridConfig-&gt;getTaxon()-&gt;getCode()</code>
+      <code>$gridConfig-&gt;getTaxon()-&gt;getCode()</code>
+      <code>$this-&gt;channelContext-&gt;getChannel()-&gt;getCode()</code>
+      <code>$this-&gt;channelContext-&gt;getChannel()-&gt;getCode()</code>
+      <code>$this-&gt;channelContext-&gt;getChannel()-&gt;getCode()</code>
+    </PossiblyNullArgument>
+    <PossiblyNullReference occurrences="2">
+      <code>getCode</code>
+      <code>getCode</code>
+    </PossiblyNullReference>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>Search</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Model/Document/Result.php">
+    <MixedArgumentTypeCoercion occurrences="6">
+      <code>$this-&gt;getAttributes() ? array_merge($this-&gt;getAttributes(), [$attribute]) : [$attribute]</code>
+      <code>$this-&gt;getChannel() ? array_unique(array_merge($this-&gt;getChannel(), [$channel])) : [$channel]</code>
+      <code>$this-&gt;getOriginalPrice() ? array_merge($this-&gt;getOriginalPrice(), [$price]) : [$price]</code>
+      <code>$this-&gt;getPrice() ? array_merge($this-&gt;getPrice(), [$price]) : [$price]</code>
+      <code>$this-&gt;getTaxon() ? array_merge($this-&gt;getTaxon(), [$taxon]) : [$taxon]</code>
+      <code>$value</code>
+    </MixedArgumentTypeCoercion>
+    <MixedInferredReturnType occurrences="4">
+      <code>Attributes</code>
+      <code>Price|null</code>
+      <code>Price|null</code>
+      <code>string</code>
+    </MixedInferredReturnType>
+    <PossiblyNullArgument occurrences="8">
+      <code>$this-&gt;getAttributes()</code>
+      <code>$this-&gt;getChannel()</code>
+      <code>$this-&gt;getId()</code>
+      <code>$this-&gt;getOriginalPrice()</code>
+      <code>$this-&gt;getPrice()</code>
+      <code>$this-&gt;getTaxon()</code>
+      <code>$this-&gt;getType()</code>
+      <code>$this-&gt;getType()</code>
+    </PossiblyNullArgument>
+    <PossiblyNullIterator occurrences="4">
+      <code>$this-&gt;getAttributes()</code>
+      <code>$this-&gt;getAttributes()</code>
+      <code>$this-&gt;getOriginalPrice()</code>
+      <code>$this-&gt;getPrice()</code>
+    </PossiblyNullIterator>
+    <UnevaluatedCode occurrences="1">
+      <code>break;</code>
+    </UnevaluatedCode>
+  </file>
+  <file src="src/Model/Document/ResultSet.php">
+    <InvalidScalarArgument occurrences="1"/>
+    <MissingClosureParamType occurrences="2">
+      <code>$filter1</code>
+      <code>$filter2</code>
+    </MissingClosureParamType>
+    <MixedArgument occurrences="8">
+      <code>$aggregation['doc_count']</code>
+      <code>$attributes[$field] ?? $field</code>
+      <code>$field</code>
+      <code>$filter1-&gt;getValues()</code>
+      <code>$taxonAggregation['doc_count']</code>
+      <code>$taxonAggregation['doc_count']</code>
+      <code>($priceAggregation['values']['max'] ?? 0) / 100</code>
+      <code>($priceAggregation['values']['min'] ?? 0) / 100</code>
+    </MixedArgument>
+    <MixedArrayAccess occurrences="31">
+      <code>$aggregation['doc_count']</code>
+      <code>$aggregation['doc_count']</code>
+      <code>$aggregation['values']</code>
+      <code>$attributeAggregations['codes']</code>
+      <code>$attributeAggregations['doc_count']</code>
+      <code>$attributeCodeBucket['key']</code>
+      <code>$attributeCodeBucket['names']</code>
+      <code>$attributeNameBucket['key']</code>
+      <code>$filterAggregations['doc_count']</code>
+      <code>$priceAggregation['doc_count']</code>
+      <code>$priceAggregation['values']</code>
+      <code>$priceAggregation['values']</code>
+      <code>$taxonAggregation['codes']</code>
+      <code>$taxonAggregation['codes']</code>
+      <code>$taxonAggregation['doc_count']</code>
+      <code>$taxonAggregation['doc_count']</code>
+      <code>$taxonAggregation['doc_count']</code>
+      <code>$taxonAggregation['doc_count']</code>
+      <code>$taxonCodeBucket['doc_count']</code>
+      <code>$taxonCodeBucket['doc_count']</code>
+      <code>$taxonCodeBucket['doc_count']</code>
+      <code>$taxonCodeBucket['doc_count']</code>
+      <code>$taxonCodeBucket['key']</code>
+      <code>$taxonCodeBucket['key']</code>
+      <code>$taxonCodeBucket['levels']</code>
+      <code>$taxonCodeBucket['levels']</code>
+      <code>$taxonLevelBucket['key']</code>
+      <code>$taxonLevelBucket['names']</code>
+      <code>$taxonLevelBucket['names']</code>
+      <code>$taxonNameBucket['key']</code>
+      <code>$taxonNameBucket['key']</code>
+    </MixedArrayAccess>
+    <MixedArrayOffset occurrences="3">
+      <code>$attributes[$attributeCode]</code>
+      <code>$attributes[$field]</code>
+      <code>$childrenTaxon[$taxonCode]</code>
+    </MixedArrayOffset>
+    <MixedAssignment occurrences="33">
+      <code>$aggregation</code>
+      <code>$attributeAggregations</code>
+      <code>$attributeCode</code>
+      <code>$attributeCodeBucket</code>
+      <code>$attributeCodeBuckets</code>
+      <code>$attributeName</code>
+      <code>$attributeNameBucket</code>
+      <code>$attributeNameBuckets</code>
+      <code>$attributes[$attributeCode]</code>
+      <code>$bucket</code>
+      <code>$buckets</code>
+      <code>$field</code>
+      <code>$filterAggregations</code>
+      <code>$level</code>
+      <code>$priceAggregation</code>
+      <code>$taxonAggregation</code>
+      <code>$taxonAggregation</code>
+      <code>$taxonCode</code>
+      <code>$taxonCode</code>
+      <code>$taxonCodeBucket</code>
+      <code>$taxonCodeBucket</code>
+      <code>$taxonCodeBuckets</code>
+      <code>$taxonCodeBuckets</code>
+      <code>$taxonLevelBucket</code>
+      <code>$taxonLevelBucket</code>
+      <code>$taxonLevelBuckets</code>
+      <code>$taxonLevelBuckets</code>
+      <code>$taxonName</code>
+      <code>$taxonName</code>
+      <code>$taxonNameBucket</code>
+      <code>$taxonNameBucket</code>
+      <code>$taxonNameBuckets</code>
+      <code>$taxonNameBuckets</code>
+    </MixedAssignment>
+    <MixedMethodCall occurrences="3">
+      <code>getCount</code>
+      <code>getCount</code>
+      <code>getValues</code>
+    </MixedMethodCall>
+    <MixedOperand occurrences="2">
+      <code>$priceAggregation['values']['max'] ?? 0</code>
+      <code>$priceAggregation['values']['min'] ?? 0</code>
+    </MixedOperand>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$childrenTaxon</code>
+    </PossiblyNullArrayOffset>
+    <PossiblyNullOperand occurrences="1">
+      <code>$currentTaxonLevel</code>
+    </PossiblyNullOperand>
+    <PropertyTypeCoercion occurrences="1">
+      <code>$this-&gt;results</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Provider/DocumentRepositoryProvider.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$class</code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Twig/Extension/CheckMethodExists.php">
+    <UndefinedDocblockClass occurrences="1">
+      <code>$this-&gt;container-&gt;getParameter('kernel.bundles')</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Twig/Extension/RenderSearchForm.php">
+    <InternalMethod occurrences="1">
+      <code>get</code>
+    </InternalMethod>
+  </file>
+</files>
