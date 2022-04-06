@@ -16,7 +16,6 @@ namespace MonsieurBiz\SyliusSearchPlugin\Model\Document;
 use Elastica\ResultSet as ElasticaResultSet;
 use JoliCode\Elastically\Result;
 use MonsieurBiz\SyliusSearchPlugin\Adapter\ResultSetAdapter;
-use MonsieurBiz\SyliusSearchPlugin\generated\Model\Taxon;
 use Pagerfanta\Pagerfanta;
 use Sylius\Component\Core\Model\TaxonInterface;
 
@@ -100,7 +99,7 @@ class ResultSet
     {
         $aggregations = $resultSet->getAggregations();
         // No aggregation so don't perform filters
-        if (empty($aggregations)) {
+        if (count($aggregations) === 0) {
             return;
         }
 

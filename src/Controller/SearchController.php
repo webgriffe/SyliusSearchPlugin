@@ -82,11 +82,14 @@ class SearchController extends AbstractController
      */
     public function postAction(Request $request)
     {
-        $query = $request->request->get('monsieurbiz_searchplugin_search')['query'] ?? null;
+        /** @var array $inputBag */
+        $inputBag = $request->request->get('monsieurbiz_searchplugin_search');
+        /** @var ?string $query */
+        $query = $inputBag['query'] ?? null;
 
         return new RedirectResponse(
             $this->generateUrl('monsieurbiz_sylius_search_search',
-                ['query' => urlencode($query)])
+                ['query' => urlencode((string) $query)])
         );
     }
 
@@ -108,7 +111,7 @@ class SearchController extends AbstractController
 
         // Redirect to document if only one result and no filter applied
         $appliedFilters = $this->gridConfig->getAppliedFilters();
-        if (1 === $resultSet->getTotalHits() && empty($appliedFilters)) {
+        if (1 === $resultSet->getTotalHits() && count($appliedFilters) === 0) {
             /** @var Result $document */
             $document = current($resultSet->getResults());
             try {

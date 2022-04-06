@@ -16,14 +16,12 @@ namespace MonsieurBiz\SyliusSearchPlugin\Twig\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function array_key_exists;
 
 class CheckMethodExists extends AbstractExtension
 {
-    private $container;
-
-    public function __construct(ContainerInterface $container)
+    public function __construct(private ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     public function getFunctions()
@@ -33,11 +31,13 @@ class CheckMethodExists extends AbstractExtension
         ];
     }
 
-    public function bundleExists($bundle)
+    public function bundleExists(string $bundle): bool
     {
-        return \array_key_exists(
+        /** @var array $bundles */
+        $bundles = $this->container->getParameter('kernel.bundles');
+        return array_key_exists(
             $bundle,
-            $this->container->getParameter('kernel.bundles')
+            $bundles
         );
     }
 }

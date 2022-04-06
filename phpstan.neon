@@ -6,6 +6,9 @@ parameters:
         # Makes PHPStan crash
         - 'src/DependencyInjection/Configuration.php'
 
+        - 'src/generated'
+        - 'src/Model/Document' #TODO
+
         # Test dependencies
         - 'tests/Application/app/**.php'
         - 'tests/Application/src/**.php'

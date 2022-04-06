@@ -17,28 +17,18 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DocumentRepositoryProvider
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var string */
-    private $documentableClasses;
-
-    /**
-     * SearchQueryProvider constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param array $documentableClasses
-     */
-    public function __construct(EntityManagerInterface $entityManager, array $documentableClasses)
-    {
-        $this->entityManager = $entityManager;
-        $this->documentableClasses = $documentableClasses;
+    /** @param string[] $documentableClasses */
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private array $documentableClasses
+    ) {
     }
 
-    public function getRepositories()
+    public function getRepositories(): array
     {
         $repositories = [];
         foreach ($this->documentableClasses as $class) {
+            /** @phpstan-ignore-next-line */
             $repositories[] = $this->entityManager->getRepository($class);
         }
 

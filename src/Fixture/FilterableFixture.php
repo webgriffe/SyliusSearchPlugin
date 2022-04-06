@@ -33,19 +33,14 @@ class FilterableFixture extends AbstractResourceFixture implements FilterableFix
         parent::__construct($productManager, $exampleFactory);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'monsieurbiz_sylius_search_filterable';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureResourceNode(ArrayNodeDefinition $resourceNode): void
     {
+        /** @phpstan-ignore-next-line */
         $resourceNode
             ->children()
             ->scalarNode('attribute')->end()

@@ -41,7 +41,7 @@ class SearchQueryProvider
      *
      * @return string
      */
-    public function getSearchQuery()
+    public function getSearchQuery(): string
     {
         return $this->getQuery($this->filesConfig->getSearchPath());
     }
@@ -73,13 +73,13 @@ class SearchQueryProvider
     /**
      * Get content from file.
      *
-     * @param $path
+     * @param string $path
      *
      * @throws ReadFileException
      *
-     * @return false|string
+     * @return string
      */
-    private function getQuery($path)
+    private function getQuery(string $path): string
     {
         $query = @file_get_contents($path);
         if (false === $query) {

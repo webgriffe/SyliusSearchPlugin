@@ -81,9 +81,9 @@ class FilterableFixtureFactory extends AbstractExampleFactory implements Filtera
     {
         $options = $this->optionsResolver->resolve($options);
 
-        if (isset($options['attribute']) && !empty($options['attribute'])) {
+        if (isset($options['attribute']) && count($options['attribute']) > 0) {
             $object = $options['attribute'];
-        } elseif (isset($options['option']) && !empty($options['option'])) {
+        } elseif (isset($options['option']) && count($options['option']) > 0) {
             $object = $options['option'];
         } else {
             throw new \Exception('You need to specify an attribute or an option to be filterable.');

@@ -28,7 +28,7 @@ class FilterHelper
      */
     public static function buildFilters(array $appliedFilters): array
     {
-        if (empty($appliedFilters)) {
+        if (count($appliedFilters) === 0) {
             return [];
         }
 
@@ -43,7 +43,7 @@ class FilterHelper
                     $filters[] = self::buildPriceFilter((int) $values['min'], (int) $values['max']);
                 }
             } else {
-                $filters[] = self::buildFilter($field, $values);
+                $filters[] = self::buildFilter((string) $field, $values);
             }
         }
 

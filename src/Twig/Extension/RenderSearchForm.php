@@ -20,6 +20,7 @@ use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Markup;
 use Twig\TwigFunction;
+use Webmozart\Assert\Assert;
 
 class RenderSearchForm extends AbstractExtension
 {
@@ -49,13 +50,15 @@ class RenderSearchForm extends AbstractExtension
         ];
     }
 
-    public function createForm($template = null)
+    public function createForm(string $template = null): Markup
     {
         $template = $template ?? '@MonsieurBizSyliusSearchPlugin/form.html.twig';
 
+        $currentRequest = $this->requestStack->getCurrentRequest();
+        Assert::notNull($currentRequest);
         return new Markup($this->templatingEngine->render($template, [
             'form' => $this->formFactory->create(SearchType::class)->createView(),
-            'query' => urldecode($this->requestStack->getCurrentRequest()->get('query') ?? ''),
+            'query' => urldecode((string) ($currentRequest->get('query') ?? '')),
         ]), 'UTF-8');
     }
 }

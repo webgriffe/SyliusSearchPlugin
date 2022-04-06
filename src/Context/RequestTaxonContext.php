@@ -18,6 +18,7 @@ use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Locale\Context\LocaleContextInterface;
 use Sylius\Component\Taxonomy\Repository\TaxonRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Webmozart\Assert\Assert;
 
 final class RequestTaxonContext implements TaxonContextInterface
 {
@@ -42,13 +43,15 @@ final class RequestTaxonContext implements TaxonContextInterface
 
     public function getTaxon(): TaxonInterface
     {
-        $slug = htmlspecialchars($this->requestStack->getCurrentRequest()->get('slug'));
+        $currentRequest = $this->requestStack->getCurrentRequest();
+        Assert::notNull($currentRequest);
+        $slug = htmlspecialchars((string) $currentRequest->get('slug'));
         $localeCode = $this->localeContext->getLocaleCode();
 
-        /** @var TaxonInterface $taxon */
+        /** @var ?TaxonInterface $taxon */
         $taxon = $this->taxonRepository->findOneBySlug($slug, $localeCode);
 
-        if (null === $slug || null === $taxon) {
+        if (null === $taxon) {
             throw new TaxonNotFoundException();
         }
 

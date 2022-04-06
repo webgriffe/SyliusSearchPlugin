@@ -123,7 +123,7 @@ class AggregationHelper
             ],
         ];
 
-        if (!empty($attributeAggregations)) {
+        if (count($attributeAggregations) !== 0) {
             $aggregations['filters'] = [
                 'nested' => ['path' => 'attributes'],
                 'aggs' => $attributeAggregations,

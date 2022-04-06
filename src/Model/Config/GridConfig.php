@@ -34,7 +34,7 @@ class GridConfig
     /** @var array */
     private $config;
 
-    /** @var string[] */
+    /** @var bool */
     private $isInitialized = false;
 
     /** @var string */
@@ -130,7 +130,7 @@ class GridConfig
 
                 // Set applied filters
                 $this->appliedFilters = $request->get('attribute') ?? [];
-                if ($priceFilter = $request->get('price')) {
+                if (null !== $priceFilter = $request->get('price')) {
                     $this->appliedFilters['price'] = $priceFilter;
                 }
 
@@ -146,13 +146,13 @@ class GridConfig
                 // Set sorting
                 $availableSorting = $this->config['sorting']['taxon'] ?? [];
                 $this->sorting = $this->cleanSorting($request->get('sorting'), $availableSorting);
-                if (!\is_array($this->sorting) || empty($this->sorting)) {
+                if (count($this->sorting) === 0) {
                     $this->sorting['position'] = self::SORT_ASC;
                 }
 
                 // Set applied filters
                 $this->appliedFilters = $request->get('attribute') ?? [];
-                if ($priceFilter = $request->get('price')) {
+                if (null !== $priceFilter = $request->get('price')) {
                     $this->appliedFilters['price'] = $priceFilter;
                 }
 
@@ -317,8 +317,8 @@ class GridConfig
     /**
      * Be sure given sort in available.
      *
-     * @param $sorting
-     * @param $availableSorting
+     * @param array|null $sorting
+     * @param array $availableSorting
      *
      * @return array
      */
