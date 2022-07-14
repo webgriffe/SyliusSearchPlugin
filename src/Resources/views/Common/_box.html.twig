@@ -19,9 +19,16 @@
     </a>
     <div class="content">
         <a href="#" class="header sylius-product-name">{{ result.attribute('name').value | join }}</a>
-
+    
         {% if result.price is not empty %}
-            <div class="sylius-product-price">{{ money.convertAndFormat(result.priceByChannelAndCurrency(channel.code, currencyCode).value) }}</div>
+            <div class="sylius-product-price" style="font-weight: bold;font-size: large;">
+                {{ money.convertAndFormat(result.priceByChannelAndCurrency(channel.code, currencyCode).value) }}
+                {% if result.originalPrice is not empty %}
+                    <span style="text-decoration: line-through;font-size: smaller;">
+                        {{ money.convertAndFormat(result.originalPriceByChannelAndCurrency(channel.code, currencyCode).value) }}
+                    </span>
+                {% endif %}
+            </div>
         {% endif %}
     </div>
 </div>
