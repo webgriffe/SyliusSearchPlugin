@@ -13,42 +13,36 @@ declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Model\Documentable;
 
+use Doctrine\Common\Collections\Collection;
 use MonsieurBiz\SyliusSearchPlugin\generated\Model\Taxon as DocumentTaxon;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\Result;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultInterface;
 use Sylius\Component\Attribute\AttributeType\SelectAttributeType;
 use Sylius\Component\Attribute\Model\AttributeValueInterface;
 use Sylius\Component\Core\Model\Channel;
+use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\Image;
 use Sylius\Component\Core\Model\ProductTaxonInterface;
-use Sylius\Component\Core\Model\ProductVariant;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Currency\Model\CurrencyInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 trait DocumentableProductTrait
 {
-    /**
-     * @return string
-     */
+    /** @return Collection<array-key, ProductVariantInterface> */
+    abstract public function getEnabledVariants(): Collection;
+
     public function getDocumentType(): string
     {
         return 'product';
     }
 
-    /**
-     * @return ResultInterface
-     */
     public function createResult(): ResultInterface
     {
         return new Result();
     }
 
-    /**
-     * @param string $locale
-     *
-     * @return ResultInterface
-     */
     public function convertToDocument(string $locale): ResultInterface
     {
         $document = $this->createResult();
@@ -76,11 +70,6 @@ trait DocumentableProductTrait
         return $this->addOptionsInDocument($document, $locale);
     }
 
-    /**
-     * @param ResultInterface $document
-     *
-     * @return ResultInterface
-     */
     protected function addImagesInDocument(ResultInterface $document): ResultInterface
     {
         /** @var Image $image */
@@ -91,11 +80,6 @@ trait DocumentableProductTrait
         return $document;
     }
 
-    /**
-     * @param ResultInterface $document
-     *
-     * @return ResultInterface
-     */
     protected function addChannelsInDocument(ResultInterface $document): ResultInterface
     {
         /** @var Channel $channel */
@@ -106,23 +90,21 @@ trait DocumentableProductTrait
         return $document;
     }
 
-    /**
-     * @param ResultInterface $document
-     *
-     * @return ResultInterface
-     */
     protected function addPricesInDocument(ResultInterface $document): ResultInterface
     {
         /** @var Channel $channel */
         foreach ($this->getChannels() as $channel) {
-            /** @var ProductVariant $variant */
-            if ($variant = $this->getCheapestVariantForChannel($channel)) {
-                $price = $variant->getChannelPricingForChannel($channel);
-
+            $cheapestVariantChannelPricing = $this->getCheapestVariantChannelPricingForChannel($channel);
+            if ($cheapestVariantChannelPricing !== null) {
                 /** @var CurrencyInterface $currency */
                 foreach ($channel->getCurrencies() as $currency) {
-                    $document->addPrice($channel->getCode(), $currency->getCode(), $price->getPrice());
-                    if ($originalPrice = $price->getOriginalPrice()) {
+                    $variantPrice = $cheapestVariantChannelPricing->getPrice();
+                    if ($variantPrice < $cheapestVariantChannelPricing->getMinimumPrice()) {
+                        $variantPrice = $cheapestVariantChannelPricing->getMinimumPrice();
+                    }
+                    $document->addPrice($channel->getCode(), $currency->getCode(), $variantPrice);
+                    $originalPrice = $cheapestVariantChannelPricing->getOriginalPrice();
+                    if ($originalPrice !== null) {
                         $document->addOriginalPrice($channel->getCode(), $currency->getCode(), $originalPrice);
                     }
                 }
@@ -132,12 +114,6 @@ trait DocumentableProductTrait
         return $document;
     }
 
-    /**
-     * @param ResultInterface $document
-     * @param string $locale
-     *
-     * @return ResultInterface
-     */
     protected function addTaxonsInDocument(ResultInterface $document, string $locale): ResultInterface
     {
         /** @var TaxonInterface $mainTaxon */
@@ -166,12 +142,6 @@ trait DocumentableProductTrait
         return $document;
     }
 
-    /**
-     * @param ResultInterface $document
-     * @param string $locale
-     *
-     * @return ResultInterface
-     */
     protected function addAttributesInDocument(ResultInterface $document, string $locale): ResultInterface
     {
         /** @var AttributeValueInterface $attributeValue */
@@ -200,17 +170,10 @@ trait DocumentableProductTrait
         return $document;
     }
 
-    /**
-     * @param Result $document
-     * @param string $locale
-     *
-     * @return Result
-     */
     protected function addOptionsInDocument(ResultInterface $document, string $locale): ResultInterface
     {
         $options = [];
-        foreach ($this->getVariants() as $variant) {
-            /** @var \App\Entity\Product\ProductVariant $variant */
+        foreach ($this->getEnabledVariants() as $variant) {
             foreach ($variant->getOptionValues() as $val) {
                 if (!isset($options[$val->getOption()->getCode()])) {
                     $options[$val->getOption()->getCode()] = [
@@ -229,28 +192,30 @@ trait DocumentableProductTrait
         return $document;
     }
 
-    /**
-     * @param $channel
-     *
-     * @return null
-     */
-    private function getCheapestVariantForChannel($channel)
+    private function getCheapestVariantChannelPricingForChannel(ChannelInterface $channel): ?ChannelPricingInterface
     {
-        $cheapestVariant = null;
-        $cheapestPrice = null;
+        $cheapestVariantChannelPricing = null;
+        $cheapestProductPrice = null;
         $variants = $this->getEnabledVariants();
         foreach ($variants as $variant) {
             $channelPrice = $variant->getChannelPricingForChannel($channel);
-            if (null === $cheapestPrice || $channelPrice->getPrice() < $cheapestPrice) {
-                $cheapestPrice = $channelPrice->getPrice();
-                $cheapestVariant = $variant;
+            if ($channelPrice === null) {
+                continue;
+            }
+            $variantPrice = $channelPrice->getPrice();
+            if ($variantPrice < $channelPrice->getMinimumPrice()) {
+                $variantPrice = $channelPrice->getMinimumPrice();
+            }
+            if (null === $cheapestProductPrice || $variantPrice < $cheapestProductPrice) {
+                $cheapestProductPrice = $variantPrice;
+                $cheapestVariantChannelPricing = $channelPrice;
             }
         }
 
-        return $cheapestVariant;
+        return $cheapestVariantChannelPricing;
     }
 
-    private function getProductHasVariantInStock()
+    private function getProductHasVariantInStock(): bool
     {
         $variants = $this->getEnabledVariants();
         /** @var ProductVariantInterface $variant */
