@@ -25,6 +25,12 @@ class Price
     /**
      * 
      *
+     * @var string[]|null
+     */
+    protected $appliedPromotions;
+    /**
+     * 
+     *
      * @return string|null
      */
     public function getChannel() : ?string
@@ -83,6 +89,27 @@ class Price
     public function setValue(?int $value) : self
     {
         $this->value = $value;
+        return $this;
+    }
+    /**
+     * 
+     *
+     * @return string[]|null
+     */
+    public function getAppliedPromotions() : ?array
+    {
+        return $this->appliedPromotions;
+    }
+    /**
+     * 
+     *
+     * @param string[]|null $appliedPromotions
+     *
+     * @return self
+     */
+    public function setAppliedPromotions(?array $appliedPromotions) : self
+    {
+        $this->appliedPromotions = $appliedPromotions;
         return $this;
     }
 }
