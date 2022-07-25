@@ -71,6 +71,12 @@
         },
         "value": {
           "type": "integer"
+        },
+        "appliedPromotions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },

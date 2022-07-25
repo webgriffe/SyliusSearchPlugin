@@ -52,6 +52,16 @@ class PriceNormalizer implements DenormalizerInterface, NormalizerInterface, Den
         elseif (property_exists($data, 'value') && $data->{'value'} === null) {
             $object->setValue(null);
         }
+        if (property_exists($data, 'appliedPromotions') && $data->{'appliedPromotions'} !== null) {
+            $values = array();
+            foreach ($data->{'appliedPromotions'} as $value) {
+                $values[] = $value;
+            }
+            $object->setAppliedPromotions($values);
+        }
+        elseif (property_exists($data, 'appliedPromotions') && $data->{'appliedPromotions'} === null) {
+            $object->setAppliedPromotions(null);
+        }
         return $object;
     }
     public function normalize($object, $format = null, array $context = array())
@@ -74,6 +84,16 @@ class PriceNormalizer implements DenormalizerInterface, NormalizerInterface, Den
         }
         else {
             $data->{'value'} = null;
+        }
+        if (null !== $object->getAppliedPromotions()) {
+            $values = array();
+            foreach ($object->getAppliedPromotions() as $value) {
+                $values[] = $value;
+            }
+            $data->{'appliedPromotions'} = $values;
+        }
+        else {
+            $data->{'appliedPromotions'} = null;
         }
         return $data;
     }
