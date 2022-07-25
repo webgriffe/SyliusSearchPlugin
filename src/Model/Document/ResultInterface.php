@@ -99,10 +99,11 @@ interface ResultInterface
      * @param string $channel
      * @param string $currency
      * @param int $value
+     * @param string[] $appliedPromotions
      *
      * @return ResultInterface
      */
-    public function addPrice(string $channel, string $currency, int $value): self;
+    public function addPrice(string $channel, string $currency, int $value, array $appliedPromotions = []): self;
 
     /**
      * @param string $channel

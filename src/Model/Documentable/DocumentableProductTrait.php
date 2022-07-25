@@ -19,6 +19,7 @@ use MonsieurBiz\SyliusSearchPlugin\Model\Document\Result;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultInterface;
 use Sylius\Component\Attribute\AttributeType\SelectAttributeType;
 use Sylius\Component\Attribute\Model\AttributeValueInterface;
+use Sylius\Component\Core\Model\CatalogPromotionInterface;
 use Sylius\Component\Core\Model\Channel;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
@@ -102,7 +103,16 @@ trait DocumentableProductTrait
                     if ($variantPrice < $cheapestVariantChannelPricing->getMinimumPrice()) {
                         $variantPrice = $cheapestVariantChannelPricing->getMinimumPrice();
                     }
-                    $document->addPrice($channel->getCode(), $currency->getCode(), $variantPrice);
+                    $appliedPromotions = [];
+                    /** @var CatalogPromotionInterface $appliedPromotion */
+                    foreach ($cheapestVariantChannelPricing->getAppliedPromotions() as $appliedPromotion) {
+                        $label = $appliedPromotion->getLabel();
+                        if ($label === null) {
+                            continue;
+                        }
+                        $appliedPromotions[] = $label;
+                    }
+                    $document->addPrice($channel->getCode(), $currency->getCode(), $variantPrice, $appliedPromotions);
                     $originalPrice = $cheapestVariantChannelPricing->getOriginalPrice();
                     if ($originalPrice !== null) {
                         $document->addOriginalPrice($channel->getCode(), $currency->getCode(), $originalPrice);

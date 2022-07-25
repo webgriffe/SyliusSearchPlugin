@@ -169,13 +169,19 @@ class Result extends Document implements ResultInterface
      * @param string $channel
      * @param string $currency
      * @param int $value
+     * @param string[] $appliedPromotions
      *
      * @return Result
      */
-    public function addPrice(string $channel, string $currency, int $value): ResultInterface
+    public function addPrice(string $channel, string $currency, int $value, array $appliedPromotions = []): ResultInterface
     {
         $price = new Price();
-        $price->setChannel($channel)->setCurrency($currency)->setValue($value);
+        $price
+            ->setChannel($channel)
+            ->setCurrency($currency)
+            ->setValue($value)
+            ->setAppliedPromotions($appliedPromotions)
+        ;
         $this->setPrice($this->getPrice() ? array_merge($this->getPrice(), [$price]) : [$price]);
 
         return $this;

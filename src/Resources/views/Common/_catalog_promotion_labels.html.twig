@@ -1,0 +1,9 @@
+<div id="appliedPromotions">
+    {% for appliedPromotion in appliedPromotions %}
+        <div class="ui blue label promotion_label" style="margin: 0.5rem 0;">
+            <div class="row ui small sylius_catalog_promotion">
+                {{ appliedPromotion }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
