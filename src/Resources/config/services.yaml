@@ -90,3 +90,9 @@ services:
       $helper: '@MonsieurBiz\SyliusSearchPlugin\Helper\RenderDocumentUrlHelper'
     tags:
       - { name: twig.extension }
+
+  MonsieurBiz\SyliusSearchPlugin\Applicator\CatalogPromotionApplicator:
+    decorates: Sylius\Bundle\CoreBundle\CatalogPromotion\Applicator\CatalogPromotionApplicatorInterface
+    arguments:
+      - '@.inner'
+      - '@MonsieurBiz\SyliusSearchPlugin\Model\Document\Index\Indexer'
