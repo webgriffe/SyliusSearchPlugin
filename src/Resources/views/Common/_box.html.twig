@@ -1,5 +1,10 @@
 {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
 
+{% set channelPricing = null %}
+{% if result.price is not empty %}
+    {% set channelPricing = result.priceByChannelAndCurrency(channel.code, currencyCode) %}
+{% endif %}
+
 <div class="ui fluid card">
     <a href="{{ path(search_result_url_param(result).path, search_result_url_param(result).params) }}" class="blurring dimmable image">
         <div class="ui dimmer">
@@ -20,14 +25,23 @@
     <div class="content">
         <a href="#" class="header sylius-product-name">{{ result.attribute('name').value | join }}</a>
     
-        {% if result.price is not empty %}
-            <div class="sylius-product-price" style="font-weight: bold;font-size: large;">
-                {{ money.convertAndFormat(result.priceByChannelAndCurrency(channel.code, currencyCode).value) }}
-                {% if result.originalPrice is not empty %}
-                    <span style="text-decoration: line-through;font-size: smaller;">
-                        {{ money.convertAndFormat(result.originalPriceByChannelAndCurrency(channel.code, currencyCode).value) }}
-                    </span>
-                {% endif %}
+        {% if channelPricing %}
+            {% include '@MonsieurBizSyliusSearchPlugin/Common/_catalog_promotion_labels.html.twig' with {'appliedPromotions': channelPricing.appliedPromotions} %}
+
+            {% set originalChannelPricing = null %}
+            {% if result.originalPrice is not empty %}
+                {% set originalChannelPricing = result.originalPriceByChannelAndCurrency(channel.code, currencyCode) %}
+            {% endif %}
+            
+            {% if originalChannelPricing and channelPricing.value != originalChannelPricing.value %}
+                <div class="sylius-product-original-price" {{ sylius_test_html_attribute('product-original-price') }}>
+                    <del>
+                        {{ money.convertAndFormat(originalChannelPricing.value) }}
+                    </del>
+                </div>
+            {% endif %}
+            <div class="sylius-product-price" {{ sylius_test_html_attribute('product-price') }}>
+                {{ money.convertAndFormat(channelPricing.value) }}
             </div>
         {% endif %}
     </div>
