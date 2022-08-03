@@ -22,9 +22,8 @@ final class CatalogPromotionApplicator implements CatalogPromotionApplicatorInte
     {
         $this->decoratedCatalogPromotionApplicator->applyOnVariant($variant, $catalogPromotion);
         $product = $variant->getProduct();
-        if (!$product instanceof DocumentableInterface) {
-            return;
+        if ($product instanceof DocumentableInterface) {
+            $this->indexer->indexOne($product);
         }
-        $this->indexer->indexOne($product);
     }
 }
