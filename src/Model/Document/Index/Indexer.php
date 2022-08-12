@@ -67,6 +67,7 @@ class Indexer extends AbstractIndex
     public function getLocales(): array
     {
         if (empty($this->locales)) {
+            /** @var LocaleInterface[] $locales */
             $locales = $this->localeRepository->findAll();
             $this->locales = array_map(
                 function(LocaleInterface $locale) {
