@@ -99,7 +99,10 @@ trait DocumentableProductTrait
             if ($cheapestVariantChannelPricing !== null) {
                 /** @var CurrencyInterface $currency */
                 foreach ($channel->getCurrencies() as $currency) {
-                    $variantPrice = min($cheapestVariantChannelPricing->getPrice(), $cheapestVariantChannelPricing->getMinimumPrice());
+                    $variantPrice = $cheapestVariantChannelPricing->getPrice();
+                    if ($variantPrice < $cheapestVariantChannelPricing->getMinimumPrice()) {
+                        $variantPrice = $cheapestVariantChannelPricing->getMinimumPrice();
+                    }
                     $appliedPromotions = [];
                     /** @var CatalogPromotionInterface $appliedPromotion */
                     foreach ($cheapestVariantChannelPricing->getAppliedPromotions() as $appliedPromotion) {
@@ -209,7 +212,10 @@ trait DocumentableProductTrait
             if ($channelPrice === null) {
                 continue;
             }
-            $variantPrice = min($channelPrice->getPrice(), $channelPrice->getMinimumPrice());
+            $variantPrice = $channelPrice->getPrice();
+            if ($variantPrice < $channelPrice->getMinimumPrice()) {
+                $variantPrice = $channelPrice->getMinimumPrice();
+            }
             if (null === $cheapestProductPrice || $variantPrice < $cheapestProductPrice) {
                 $cheapestProductPrice = $variantPrice;
                 $cheapestVariantChannelPricing = $channelPrice;
