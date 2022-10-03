@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\Collection;
 use MonsieurBiz\SyliusSearchPlugin\generated\Model\Taxon as DocumentTaxon;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\Result;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultInterface;
+use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultWithPromotionsInterface;
 use Sylius\Component\Attribute\AttributeType\SelectAttributeType;
 use Sylius\Component\Attribute\Model\AttributeValueInterface;
 use Sylius\Component\Core\Model\CatalogPromotionInterface;
@@ -112,7 +113,12 @@ trait DocumentableProductTrait
                         }
                         $appliedPromotions[] = $label;
                     }
-                    $document->addPrice($channel->getCode(), $currency->getCode(), $variantPrice, $appliedPromotions);
+                    if ($document instanceof ResultWithPromotionsInterface) {
+                        $document->addPriceWithPromotions($channel->getCode(), $currency->getCode(), $variantPrice, $appliedPromotions);
+                    } else {
+                        trigger_deprecation(sprintf('Your result class should implement also the %s interface, the addPrice method will be removed in next major release.', ResultWithPromotionsInterface::class));
+                        $document->addPrice($channel->getCode(), $currency->getCode(), $variantPrice);
+                    }
                     $originalPrice = $cheapestVariantChannelPricing->getOriginalPrice();
                     if ($originalPrice !== null) {
                         $document->addOriginalPrice($channel->getCode(), $currency->getCode(), $originalPrice);
