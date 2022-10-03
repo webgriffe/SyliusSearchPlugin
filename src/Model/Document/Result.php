@@ -23,7 +23,7 @@ use MonsieurBiz\SyliusSearchPlugin\generated\Model\Price;
 use MonsieurBiz\SyliusSearchPlugin\generated\Model\Taxon;
 use MonsieurBiz\SyliusSearchPlugin\Provider\UrlParamsProvider;
 
-class Result extends Document implements ResultInterface
+class Result extends Document implements ResultInterface, ResultWithPromotionsInterface
 {
     /**
      * Document ID in elasticsearch.
@@ -169,11 +169,25 @@ class Result extends Document implements ResultInterface
      * @param string $channel
      * @param string $currency
      * @param int $value
+     *
+     * @return Result
+     */
+    public function addPrice(string $channel, string $currency, int $value): ResultInterface
+    {
+        $this->addPriceWithPromotions($channel, $currency, $value, []);
+
+        return $this;
+    }
+
+    /**
+     * @param string $channel
+     * @param string $currency
+     * @param int $value
      * @param string[] $appliedPromotions
      *
      * @return Result
      */
-    public function addPrice(string $channel, string $currency, int $value, array $appliedPromotions = []): ResultInterface
+    public function addPriceWithPromotions(string $channel, string $currency, int $value, array $appliedPromotions = []): ResultInterface
     {
         $price = new Price();
         $price

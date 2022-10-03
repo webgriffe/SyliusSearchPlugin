@@ -96,14 +96,14 @@ interface ResultInterface
     public function addTaxon(string $code, string $name, int $position, int $level, int $productPosition): self;
 
     /**
+     * @deprecated Will be replaced by method addPriceWithPromotions in ResultWithPromotionsInterface
      * @param string $channel
      * @param string $currency
      * @param int $value
-     * @param string[] $appliedPromotions
      *
      * @return ResultInterface
      */
-    public function addPrice(string $channel, string $currency, int $value, array $appliedPromotions = []): self;
+    public function addPrice(string $channel, string $currency, int $value): self;
 
     /**
      * @param string $channel
