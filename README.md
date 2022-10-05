@@ -68,18 +68,6 @@ MONSIEURBIZ_SEARCHPLUGIN_ES_PORT=9200
 The plugin was developed for Elasticsearch 7.2.x versions. 
 You need to have `analysis-icu` and `analysis-phonetic` elasticsearch plugin installed.
 
-### Development 
-
-Elasticsearch is available on `9200` port : http://127.0.0.1:9200/  
-Cerebro on port `9000` : http://127.0.0.1:9000/#/overview?host=http:%2F%2Felasticsearch:9200  
-Kibana on port `5601` : http://127.0.0.1:5601/ 
-
-On your machine, Elasticsearch is available at http://127.0.0.1:9200/  
-In docker, Elasticsearch is available at http://elasticsearch:9200/  
-This is the second URL you have to put on Cerebro, Kibana and Elasticsearch if you want to connect to the cluster.  
-
-For a development infrastructure with docker, you can check the [Monsieur Biz Sylius infra](https://github.com/monsieurbiz/sylius-infra/)
-
 ## Configuration
 
 The default module configuration is : 
