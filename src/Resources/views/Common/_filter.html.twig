@@ -5,7 +5,7 @@
     <div class="filter-item" id="{{ 'filter-' ~ filter.code }}" >
         <div class="ui teal ribbon label">{{ filter.label | trans }}</div>
         <div class="filter-values" style="width: 100%">
-            {% for value in filter.values %}
+            {% for value in filter.values|sort((a, b) => a.label <=> b.label) %}
                 {% set valueIsApplied = (value.slug in currentValues) %}
                 <div class="filter-value" style="margin-top: 10px;">
                     <div class="ui toggle checkbox">
