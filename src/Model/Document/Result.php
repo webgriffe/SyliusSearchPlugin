@@ -23,6 +23,9 @@ use MonsieurBiz\SyliusSearchPlugin\generated\Model\Price;
 use MonsieurBiz\SyliusSearchPlugin\generated\Model\Taxon;
 use MonsieurBiz\SyliusSearchPlugin\Provider\UrlParamsProvider;
 
+/**
+ * @psalm-suppress DeprecatedInterface
+ */
 class Result extends Document implements ResultInterface, ResultWithPromotionsInterface
 {
     /**
