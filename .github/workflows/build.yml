@@ -14,7 +14,7 @@ on:
 
 jobs:
     tests:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
         name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, MySQL ${{ matrix.mysql }}"
 
@@ -23,7 +23,7 @@ jobs:
             matrix:
                 php: ["8.0"]
                 symfony: ["5.4.*"]
-                sylius: ["^1.11.6"]
+                sylius: ["1.11.13"]
                 node: ["14.x"]
                 mysql: ["8.0"]
 
@@ -92,11 +92,15 @@ jobs:
                         ${{ runner.os }}-php-${{ matrix.php }}-composer-
 
             -
-                name: Restrict Symfony version
-                if: matrix.symfony != ''
+                name: Configure global composer
                 run: |
                     composer global config --no-plugins allow-plugins.symfony/flex true
                     composer global require --no-progress --no-scripts --no-plugins "symfony/flex:^2.2.2"
+
+            -
+                name: Restrict Symfony version
+                if: matrix.symfony != ''
+                run: |
                     composer config extra.symfony.require "${{ matrix.symfony }}"
 
             -
@@ -107,6 +111,8 @@ jobs:
             -
                 name: Install PHP dependencies
                 run: composer install --no-interaction
+                env:
+                    SYMFONY_REQUIRE: ${{ matrix.symfony }}
 
             -
                 name: Get Yarn cache directory
