@@ -121,6 +121,8 @@ class Search extends AbstractIndex
      * @param array $query
      *
      * @return ResultSet
+     *
+     * @psalm-suppress InvalidArgument
      */
     private function query(GridConfig $gridConfig, array $query)
     {
