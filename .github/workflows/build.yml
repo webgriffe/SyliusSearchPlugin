@@ -194,8 +194,10 @@ jobs:
         name: Roave BC Check
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@master
+            - uses: actions/checkout@v3
             - name: fetch tags
               run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+            - name: fetch tags
+              run: git config --global --add safe.directory /github/workspace
             - name: Roave BC Check
               uses: ./.github/actions/roave-bc-check
