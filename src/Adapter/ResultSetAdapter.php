@@ -44,7 +44,7 @@ class ResultSetAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function getNbResults()
+    public function getNbResults(): int
     {
         return $this->resultSet->getTotalHits();
     }
@@ -52,7 +52,7 @@ class ResultSetAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function getSlice($offset, $length)
+    public function getSlice($offset, $length): iterable
     {
         return \array_slice($this->resultSet->getResults(), $offset, $length);
     }
