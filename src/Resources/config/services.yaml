@@ -25,6 +25,10 @@ services:
     tags:
       - { name: form.type_extension }
 
+  MonsieurBiz\SyliusSearchPlugin\Twig\Extension\CheckMethodExists:
+      arguments:
+          - '@service_container'
+
   # Client configuration.
   JoliCode\Elastically\Client:
     arguments:
