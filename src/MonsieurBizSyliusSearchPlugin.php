@@ -19,4 +19,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 final class MonsieurBizSyliusSearchPlugin extends Bundle
 {
     use SyliusPluginTrait;
+
+    public function getPath(): string
+    {
+        return __DIR__;
+    }
 }

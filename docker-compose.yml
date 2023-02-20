@@ -23,13 +23,14 @@ services:
 
     mysql:
         image: mysql:8.0
+        platform: linux/amd64
         environment:
             - MYSQL_ALLOW_EMPTY_PASSWORD=true
             - MYSQL_DATABASE=sylius_search_plugin_test
             - MYSQL_USER=sylius
             - MYSQL_PASSWORD=sylius
         ports:
-            - "3306:3306"
+            - ${MYSQL_PORT:-3306}:3306
         volumes:
             - mysql_data:/var/lib/mysql:rw
     
