@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.7.1@cd53e047a58f71f646dd6bf45476076ab07b5d44">
+<files psalm-version="4.27.0@faf106e717c37b8c81721845dba9de3d8deed8ff">
+  <file src="src/Adapter/ResultSetAdapter.php">
+    <LessSpecificReturnStatement occurrences="1">
+      <code>$this-&gt;resultSet-&gt;getTotalHits()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>int</code>
+    </MoreSpecificReturnType>
+  </file>
   <file src="src/Command/PopulateCommand.php">
     <NonInvariantDocblockPropertyType occurrences="1">
       <code>$defaultName</code>
@@ -128,10 +136,9 @@
       <code>bool</code>
       <code>bool</code>
     </MixedInferredReturnType>
-    <MixedPropertyTypeCoercion occurrences="3">
+    <MixedPropertyTypeCoercion occurrences="2">
       <code>$this-&gt;cleanSorting($request-&gt;get('sorting'), $availableSorting)</code>
       <code>$this-&gt;cleanSorting($request-&gt;get('sorting'), $availableSorting)</code>
-      <code>$this-&gt;sorting</code>
     </MixedPropertyTypeCoercion>
     <MixedReturnStatement occurrences="2">
       <code>$this-&gt;config['filters']['apply_manually'] ?? false</code>
@@ -193,9 +200,6 @@
     <MixedMethodCall occurrences="1">
       <code>findAll</code>
     </MixedMethodCall>
-    <RedundantConditionGivenDocblockType occurrences="1">
-      <code>isInstanceOf</code>
-    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Model/Document/Index/Search.php">
     <MixedArgument occurrences="4">
@@ -254,12 +258,33 @@
       <code>$this-&gt;getTaxon() ? array_merge($this-&gt;getTaxon(), [$taxon]) : [$taxon]</code>
       <code>$value</code>
     </MixedArgumentTypeCoercion>
+    <MixedAssignment occurrences="4">
+      <code>$attribute</code>
+      <code>$attribute</code>
+      <code>$price</code>
+      <code>$price</code>
+    </MixedAssignment>
     <MixedInferredReturnType occurrences="4">
       <code>Attributes</code>
       <code>Price|null</code>
       <code>Price|null</code>
       <code>string</code>
     </MixedInferredReturnType>
+    <MixedMethodCall occurrences="7">
+      <code>getChannel</code>
+      <code>getChannel</code>
+      <code>getCode</code>
+      <code>getCurrency</code>
+      <code>getCurrency</code>
+      <code>getLocale</code>
+      <code>getLocale</code>
+    </MixedMethodCall>
+    <MixedReturnStatement occurrences="4">
+      <code>$attribute</code>
+      <code>$attribute-&gt;getLocale()</code>
+      <code>$price</code>
+      <code>$price</code>
+    </MixedReturnStatement>
     <PossiblyNullArgument occurrences="8">
       <code>$this-&gt;getAttributes()</code>
       <code>$this-&gt;getChannel()</code>
@@ -282,10 +307,6 @@
   </file>
   <file src="src/Model/Document/ResultSet.php">
     <InvalidScalarArgument occurrences="1"/>
-    <MissingClosureParamType occurrences="2">
-      <code>$filter1</code>
-      <code>$filter2</code>
-    </MissingClosureParamType>
     <MixedArgument occurrences="8">
       <code>$aggregation['doc_count']</code>
       <code>$attributes[$field] ?? $field</code>
@@ -392,11 +413,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$class</code>
     </ArgumentTypeCoercion>
-  </file>
-  <file src="src/Twig/Extension/CheckMethodExists.php">
-    <UndefinedDocblockClass occurrences="1">
-      <code>$this-&gt;container-&gt;getParameter('kernel.bundles')</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="src/Twig/Extension/RenderSearchForm.php">
     <InternalMethod occurrences="1">
