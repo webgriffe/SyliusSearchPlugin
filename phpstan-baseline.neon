@@ -1,0 +1,91 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Class MonsieurBiz\\\\SyliusSearchPlugin\\\\Adapter\\\\ResultSetAdapter implements generic interface Pagerfanta\\\\Adapter\\\\AdapterInterface but does not specify its types\\: T$#"
+			count: 1
+			path: src/Adapter/ResultSetAdapter.php
+
+		-
+			message: "#^Method MonsieurBiz\\\\SyliusSearchPlugin\\\\Adapter\\\\ResultSetAdapter\\:\\:getNbResults\\(\\) should return int\\<0, max\\> but returns int\\.$#"
+			count: 1
+			path: src/Adapter/ResultSetAdapter.php
+
+		-
+			message: "#^PHPDoc type string of property MonsieurBiz\\\\SyliusSearchPlugin\\\\Command\\\\PopulateCommand\\:\\:\\$defaultName is not the same as PHPDoc type string\\|null of overridden property Symfony\\\\Component\\\\Console\\\\Command\\\\Command\\:\\:\\$defaultName\\.$#"
+			count: 1
+			path: src/Command/PopulateCommand.php
+
+		-
+			message: "#^Cannot cast mixed to string\\.$#"
+			count: 1
+			path: src/Context/RequestTaxonContext.php
+
+		-
+			message: "#^Method MonsieurBiz\\\\SyliusSearchPlugin\\\\Fixture\\\\Factory\\\\FilterableFixtureFactory\\:\\:__construct\\(\\) has parameter \\$productAttributeRepository with generic interface Sylius\\\\Component\\\\Resource\\\\Repository\\\\RepositoryInterface but does not specify its types\\: T$#"
+			count: 1
+			path: src/Fixture/Factory/FilterableFixtureFactory.php
+
+		-
+			message: "#^Method MonsieurBiz\\\\SyliusSearchPlugin\\\\Fixture\\\\Factory\\\\FilterableFixtureFactory\\:\\:__construct\\(\\) has parameter \\$productOptionRepository with generic interface Sylius\\\\Component\\\\Resource\\\\Repository\\\\RepositoryInterface but does not specify its types\\: T$#"
+			count: 1
+			path: src/Fixture/Factory/FilterableFixtureFactory.php
+
+		-
+			message: "#^Property MonsieurBiz\\\\SyliusSearchPlugin\\\\Fixture\\\\Factory\\\\FilterableFixtureFactory\\:\\:\\$productAttributeRepository with generic interface Sylius\\\\Component\\\\Resource\\\\Repository\\\\RepositoryInterface does not specify its types\\: T$#"
+			count: 1
+			path: src/Fixture/Factory/FilterableFixtureFactory.php
+
+		-
+			message: "#^Property MonsieurBiz\\\\SyliusSearchPlugin\\\\Fixture\\\\Factory\\\\FilterableFixtureFactory\\:\\:\\$productOptionRepository with generic interface Sylius\\\\Component\\\\Resource\\\\Repository\\\\RepositoryInterface does not specify its types\\: T$#"
+			count: 1
+			path: src/Fixture/Factory/FilterableFixtureFactory.php
+
+		-
+			message: "#^Cannot access offset 'price' on mixed\\.$#"
+			count: 2
+			path: src/Model/Config/GridConfig.php
+
+		-
+			message: "#^Cannot cast mixed to int\\.$#"
+			count: 4
+			path: src/Model/Config/GridConfig.php
+
+		-
+			message: "#^Method MonsieurBiz\\\\SyliusSearchPlugin\\\\Model\\\\Config\\\\GridConfig\\:\\:__construct\\(\\) has parameter \\$productAttributeRepository with generic interface Sylius\\\\Component\\\\Resource\\\\Repository\\\\RepositoryInterface but does not specify its types\\: T$#"
+			count: 1
+			path: src/Model/Config/GridConfig.php
+
+		-
+			message: "#^Method MonsieurBiz\\\\SyliusSearchPlugin\\\\Model\\\\Config\\\\GridConfig\\:\\:__construct\\(\\) has parameter \\$productOptionRepository with generic interface Sylius\\\\Component\\\\Resource\\\\Repository\\\\RepositoryInterface but does not specify its types\\: T$#"
+			count: 1
+			path: src/Model/Config/GridConfig.php
+
+		-
+			message: "#^Parameter \\#1 \\$sorting of method MonsieurBiz\\\\SyliusSearchPlugin\\\\Model\\\\Config\\\\GridConfig\\:\\:cleanSorting\\(\\) expects array\\|null, mixed given\\.$#"
+			count: 2
+			path: src/Model/Config/GridConfig.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function urldecode expects string, mixed given\\.$#"
+			count: 2
+			path: src/Model/Config/GridConfig.php
+
+		-
+			message: "#^Property MonsieurBiz\\\\SyliusSearchPlugin\\\\Model\\\\Config\\\\GridConfig\\:\\:\\$appliedFilters \\(array\\) does not accept mixed\\.$#"
+			count: 2
+			path: src/Model/Config/GridConfig.php
+
+		-
+			message: "#^Property MonsieurBiz\\\\SyliusSearchPlugin\\\\Model\\\\Config\\\\GridConfig\\:\\:\\$productAttributeRepository with generic interface Sylius\\\\Component\\\\Resource\\\\Repository\\\\RepositoryInterface does not specify its types\\: T$#"
+			count: 1
+			path: src/Model/Config/GridConfig.php
+
+		-
+			message: "#^Property MonsieurBiz\\\\SyliusSearchPlugin\\\\Model\\\\Config\\\\GridConfig\\:\\:\\$productOptionRepository with generic interface Sylius\\\\Component\\\\Resource\\\\Repository\\\\RepositoryInterface does not specify its types\\: T$#"
+			count: 1
+			path: src/Model/Config/GridConfig.php
+
+		-
+			message: "#^Cannot cast mixed to string\\.$#"
+			count: 1
+			path: src/Twig/Extension/RenderSearchForm.php
