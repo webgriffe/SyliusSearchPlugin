@@ -31,6 +31,9 @@ class CheckMethodExists extends AbstractExtension
         ];
     }
 
+    /**
+     * @psalm-suppress UndefinedDocblockClass
+     */
     public function bundleExists(string $bundle): bool
     {
         /** @var array $bundles */
