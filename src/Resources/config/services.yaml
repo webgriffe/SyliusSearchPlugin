@@ -100,3 +100,9 @@ services:
     arguments:
       - '@.inner'
       - '@MonsieurBiz\SyliusSearchPlugin\Model\Document\Index\Indexer'
+
+  MonsieurBiz\SyliusSearchPlugin\Processor\CatalogPromotionStateProcessor:
+      decorates: Sylius\Bundle\CoreBundle\CatalogPromotion\Processor\CatalogPromotionStateProcessorInterface
+      arguments:
+          - '@.inner'
+          - '@MonsieurBiz\SyliusSearchPlugin\Model\Document\Index\Indexer'
