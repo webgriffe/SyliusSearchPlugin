@@ -123,6 +123,7 @@ class Search extends AbstractIndex
      * @return ResultSet
      *
      * @psalm-suppress InvalidArgument
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     private function query(GridConfig $gridConfig, array $query)
     {
