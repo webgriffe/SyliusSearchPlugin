@@ -82,7 +82,6 @@ class SearchController extends AbstractController
      */
     public function postAction(Request $request)
     {
-        /** @var array $inputBag */
         $inputBag = $request->request->all('monsieurbiz_searchplugin_search');
         /** @var ?string $query */
         $query = $inputBag['query'] ?? null;
