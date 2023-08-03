@@ -85,10 +85,13 @@ class SearchController extends AbstractController
         $inputBag = $request->request->all('monsieurbiz_searchplugin_search');
         /** @var ?string $query */
         $query = $inputBag['query'] ?? null;
+        if ($query === null || $query === '') {
+            throw $this->createNotFoundException();
+        }
 
         return new RedirectResponse(
             $this->generateUrl('monsieurbiz_sylius_search_search',
-                ['query' => urlencode((string) $query)])
+                ['query' => urlencode($query)])
         );
     }
 
