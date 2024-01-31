@@ -23,6 +23,7 @@ use MonsieurBiz\SyliusSearchPlugin\Model\Documentable\DocumentableInterface;
 use MonsieurBiz\SyliusSearchPlugin\Provider\DocumentRepositoryProvider;
 use MonsieurBiz\SyliusSearchPlugin\Provider\SearchQueryProvider;
 use Psr\Log\LoggerInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Locale\Model\LocaleInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
@@ -106,7 +107,12 @@ class Indexer extends AbstractIndex
 
         $repositories = $this->documentRepositoryProvider->getRepositories();
         foreach ($repositories as $repository) {
-            $documents = $repository->findAll();
+            // @TODO this could be improved by introducing a DocumentableRepositoryInterface
+            if ($repository instanceof ProductRepositoryInterface) {
+                $documents = $repository->findBy(['enabled' => true]);
+            } else {
+                $documents = $repository->findAll();
+            }
             /** @var DocumentableInterface $document */
             foreach ($documents as $document) {
                 Assert::isInstanceOf($document, DocumentableInterface::class);
