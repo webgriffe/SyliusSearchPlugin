@@ -1,24 +1,16 @@
 <?php
 
-/*
- * This file is part of Monsieur Biz' Search plugin for Sylius.
- *
- * (c) Monsieur Biz <sylius@monsieurbiz.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Model\Config;
 
 use MonsieurBiz\SyliusSearchPlugin\Exception\UnknownGridConfigType;
 use Sylius\Component\Core\Model\TaxonInterface;
-use Sylius\Component\Product\Model\ProductAttribute;
-use Sylius\Component\Product\Model\ProductOption;
+use Sylius\Component\Product\Model\ProductAttributeInterface;
+use Sylius\Component\Product\Model\ProductOptionInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use function in_array;
 
 class GridConfig
 {
@@ -31,78 +23,46 @@ class GridConfig
 
     public const FALLBACK_LIMIT = 10;
 
-    /** @var array */
-    private $config;
+    private bool $isInitialized = false;
 
-    /** @var bool */
-    private $isInitialized = false;
+    private string $type;
 
-    /** @var string */
-    private $type;
+    private string $locale;
 
-    /** @var string */
-    private $locale;
+    private string $query;
 
-    /** @var string */
-    private $query;
-
-    /** @var int */
-    private $page;
+    private int $page;
 
     /** @var int[] */
-    private $limits;
+    private array $limits;
 
-    /** @var int */
-    private $limit;
+    private int $limit;
 
     /** @var string[] */
-    private $sorting;
+    private array $sorting;
 
-    /** @var TaxonInterface|null */
-    private $taxon;
+    private ?TaxonInterface $taxon;
 
-    /** @var array */
-    private $appliedFilters;
+    private array $appliedFilters;
 
-    /**
-     * @var array|null
-     */
-    private $filterableAttributes;
+    /** @var string[]|null */
+    private ?array $filterableAttributes;
 
-    /**
-     * @var array|null
-     */
-    private $filterableOptions;
+    /** @var string[]|null */
+    private ?array $filterableOptions;
 
     /**
-     * @var RepositoryInterface
-     */
-    private $productAttributeRepository;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $productOptionRepository;
-
-    /**
-     * GridConfig constructor.
-     *
      * @param array $config
-     * @param RepositoryInterface $productAttributeRepository
-     * @param RepositoryInterface $productOptionRepository
+     * @param RepositoryInterface<ProductAttributeInterface> $productAttributeRepository
+     * @param RepositoryInterface<ProductOptionInterface> $productOptionRepository
      */
-    public function __construct(array $config, RepositoryInterface $productAttributeRepository, RepositoryInterface $productOptionRepository)
-    {
-        $this->config = $config;
-        $this->productAttributeRepository = $productAttributeRepository;
-        $this->productOptionRepository = $productOptionRepository;
+    public function __construct(
+        private array $config,
+        private RepositoryInterface $productAttributeRepository,
+        private RepositoryInterface $productOptionRepository
+    ) {
     }
 
-    /**
-     * @param string $type
-     * @param Request $request
-     * @param TaxonInterface|null $taxon
-     */
     public function init(string $type, Request $request, ?TaxonInterface $taxon = null): void
     {
         if ($this->isInitialized) {
@@ -124,7 +84,7 @@ class GridConfig
                 // Set limit
                 $this->limit = max(1, (int) $request->get('limit'));
                 $this->limits = $this->config['limits']['search'] ?? [];
-                if (!\in_array($this->limit, $this->limits, true)) {
+                if (!in_array($this->limit, $this->limits, true)) {
                     $this->limit = $this->config['default_limit']['search'] ?? self::FALLBACK_LIMIT;
                 }
 
@@ -159,7 +119,7 @@ class GridConfig
                 // Set limit
                 $this->limit = max(1, (int) $request->get('limit'));
                 $this->limits = $this->config['limits']['taxon'] ?? [];
-                if (!\in_array($this->limit, $this->limits, true)) {
+                if (!in_array($this->limit, $this->limits, true)) {
                     $this->limit = $this->config['default_limit']['taxon'] ?? self::FALLBACK_LIMIT;
                 }
                 $this->isInitialized = true;
@@ -180,33 +140,21 @@ class GridConfig
         }
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * @return string
-     */
     public function getQuery(): string
     {
         return $this->query;
     }
 
-    /**
-     * @return int
-     */
     public function getPage(): int
     {
         return $this->page;
@@ -220,9 +168,6 @@ class GridConfig
         return $this->limits;
     }
 
-    /**
-     * @return int
-     */
     public function getLimit(): int
     {
         return $this->limit;
@@ -246,9 +191,8 @@ class GridConfig
                 'filterable' => true,
             ]);
             $this->filterableAttributes = [];
-            /** @var ProductAttribute $attribute */
             foreach ($attributes as $attribute) {
-                $this->filterableAttributes[] = $attribute->getCode();
+                $this->filterableAttributes[] = (string) $attribute->getCode();
             }
         }
 
@@ -265,26 +209,19 @@ class GridConfig
                 'filterable' => true,
             ]);
             $this->filterableOptions = [];
-            /** @var ProductOption $option */
             foreach ($options as $option) {
-                $this->filterableOptions[] = $option->getCode();
+                $this->filterableOptions[] = (string) $option->getCode();
             }
         }
 
         return $this->filterableOptions;
     }
 
-    /**
-     * @return bool
-     */
     public function haveToApplyManuallyFilters(): bool
     {
         return $this->config['filters']['apply_manually'] ?? false;
     }
 
-    /**
-     * @return bool
-     */
     public function useMainTaxonForFilter(): bool
     {
         return $this->config['filters']['use_main_taxon'] ?? false;
@@ -298,38 +235,26 @@ class GridConfig
         return array_merge($this->getAttributeFilters(), $this->getOptionFilters());
     }
 
-    /**
-     * @return array
-     */
     public function getAppliedFilters(): array
     {
         return $this->appliedFilters;
     }
 
-    /**
-     * @return TaxonInterface|null
-     */
     public function getTaxon(): ?TaxonInterface
     {
         return $this->taxon;
     }
 
-    /**
-     * Be sure given sort in available.
-     *
-     * @param array|null $sorting
-     * @param array $availableSorting
-     *
-     * @return array
-     */
     private function cleanSorting(?array $sorting, array $availableSorting): array
     {
-        if (!\is_array($sorting)) {
+        if ($sorting === null) {
             return  [];
         }
 
         foreach ($sorting as $field => $order) {
-            if (!\in_array($field, $availableSorting, true) || !\in_array($order, [self::SORT_ASC, self::SORT_DESC], true)) {
+            if (!in_array($field, $availableSorting, true) ||
+                !in_array($order, [self::SORT_ASC, self::SORT_DESC], true)
+            ) {
                 unset($sorting[$field]);
             }
         }

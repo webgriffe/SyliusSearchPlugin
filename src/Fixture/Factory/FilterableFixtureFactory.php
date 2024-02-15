@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of Monsieur Biz' Search plugin for Sylius.
- *
- * (c) Monsieur Biz <sylius@monsieurbiz.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Fixture\Factory;
@@ -24,40 +15,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FilterableFixtureFactory extends AbstractExampleFactory implements FilterableFixtureFactoryInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    protected $productAttributeRepository;
+    private OptionsResolver $optionsResolver;
 
     /**
-     * @var RepositoryInterface
-     */
-    protected $productOptionRepository;
-
-    /**
-     * @var OptionsResolver
-     */
-    private $optionsResolver;
-
-    /**
-     * FilterableFixtureFactory constructor.
-     *
-     * @param RepositoryInterface $productAttributeRepository
-     * @param RepositoryInterface $productOptionRepository
+     * @param RepositoryInterface<ProductAttributeInterface> $productAttributeRepository
+     * @param RepositoryInterface<ProductOptionInterface> $productOptionRepository
      */
     public function __construct(
-        RepositoryInterface $productAttributeRepository,
-        RepositoryInterface $productOptionRepository
+        protected RepositoryInterface $productAttributeRepository,
+        protected RepositoryInterface $productOptionRepository
     ) {
-        $this->productAttributeRepository = $productAttributeRepository;
-        $this->productOptionRepository = $productOptionRepository;
         $this->optionsResolver = new OptionsResolver();
         $this->configureOptions($this->optionsResolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -72,13 +43,9 @@ class FilterableFixtureFactory extends AbstractExampleFactory implements Filtera
     }
 
     /**
-     * @param array $options
-     *
      * @throws Exception
-     *
-     * @return object
      */
-    public function create(array $options = [])
+    public function create(array $options = []): object
     {
         $options = $this->optionsResolver->resolve($options);
 

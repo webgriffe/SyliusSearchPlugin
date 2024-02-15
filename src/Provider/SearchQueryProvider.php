@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of Monsieur Biz' Search plugin for Sylius.
- *
- * (c) Monsieur Biz <sylius@monsieurbiz.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Provider;
@@ -19,14 +10,9 @@ use MonsieurBiz\SyliusSearchPlugin\Model\Config\FilesConfig;
 
 class SearchQueryProvider
 {
-    /** @var FilesConfig */
-    private $filesConfig;
+    private FilesConfig $filesConfig;
 
     /**
-     * SearchQueryProvider constructor.
-     *
-     * @param array $files
-     *
      * @throws MissingConfigFileException
      */
     public function __construct(array $files)
@@ -35,11 +21,7 @@ class SearchQueryProvider
     }
 
     /**
-     * Get search query.
-     *
      * @throws ReadFileException
-     *
-     * @return string
      */
     public function getSearchQuery(): string
     {
@@ -47,37 +29,23 @@ class SearchQueryProvider
     }
 
     /**
-     * Get instant query.
-     *
      * @throws ReadFileException
-     *
-     * @return false|string
      */
-    public function getInstantQuery()
+    public function getInstantQuery(): ?string
     {
         return $this->getQuery($this->filesConfig->getInstantPath());
     }
 
     /**
-     * Get taxon query.
-     *
      * @throws ReadFileException
-     *
-     * @return false|string
      */
-    public function getTaxonQuery()
+    public function getTaxonQuery(): ?string
     {
         return $this->getQuery($this->filesConfig->getTaxonPath());
     }
 
     /**
-     * Get content from file.
-     *
-     * @param string $path
-     *
      * @throws ReadFileException
-     *
-     * @return string
      */
     private function getQuery(string $path): string
     {

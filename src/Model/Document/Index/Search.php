@@ -1,21 +1,11 @@
 <?php
 
-/*
- * This file is part of Monsieur Biz' Search plugin for Sylius.
- *
- * (c) Monsieur Biz <sylius@monsieurbiz.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Model\Document\Index;
 
 use Elastica\Exception\Connection\HttpException;
 use Elastica\Exception\ResponseException;
-use Elastica\ResultSet as ElasticaResultSet;
 use JoliCode\Elastically\Client;
 use MonsieurBiz\SyliusSearchPlugin\Exception\ReadFileException;
 use MonsieurBiz\SyliusSearchPlugin\Helper\AggregationHelper;
@@ -28,45 +18,19 @@ use MonsieurBiz\SyliusSearchPlugin\Provider\SearchQueryProvider;
 use Psr\Log\LoggerInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\Yaml\Yaml;
+use Webmozart\Assert\Assert;
 
 class Search extends AbstractIndex
 {
-    /** @var SearchQueryProvider */
-    private $searchQueryProvider;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var ChannelContextInterface */
-    private $channelContext;
-
-    /**
-     * PopulateCommand constructor.
-     *
-     * @param Client $client
-     * @param SearchQueryProvider $searchQueryProvider
-     * @param ChannelContextInterface $channelContext
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         Client $client,
-        SearchQueryProvider $searchQueryProvider,
-        ChannelContextInterface $channelContext,
-        LoggerInterface $logger
+        private SearchQueryProvider $searchQueryProvider,
+        private ChannelContextInterface $channelContext,
+        private LoggerInterface $logger
     ) {
         parent::__construct($client);
-        $this->searchQueryProvider = $searchQueryProvider;
-        $this->channelContext = $channelContext;
-        $this->logger = $logger;
     }
 
-    /**
-     * Search documents for a given locale, search terms, max number items and page.
-     *
-     * @param GridConfig $gridConfig
-     *
-     * @return ResultSet
-     */
     public function search(GridConfig $gridConfig): ResultSet
     {
         try {
@@ -78,13 +42,6 @@ class Search extends AbstractIndex
         }
     }
 
-    /**
-     * Instant search documents for a given locale, query and a max number items.
-     *
-     * @param GridConfig $gridConfig
-     *
-     * @return ResultSet
-     */
     public function instant(GridConfig $gridConfig): ResultSet
     {
         try {
@@ -96,13 +53,6 @@ class Search extends AbstractIndex
         }
     }
 
-    /**
-     * Taxon search documents for a given locale, taxon code, max number items and page.
-     *
-     * @param GridConfig $gridConfig
-     *
-     * @return ResultSet
-     */
     public function taxon(GridConfig $gridConfig): ResultSet
     {
         try {
@@ -114,28 +64,13 @@ class Search extends AbstractIndex
         }
     }
 
-    /**
-     * Perform search for a given query.
-     *
-     * @param GridConfig $gridConfig
-     * @param array $query
-     *
-     * @return ResultSet
-     *
-     * @psalm-suppress InvalidArgument
-     * @psalm-suppress MixedArgumentTypeCoercion
-     */
-    private function query(GridConfig $gridConfig, array $query)
+    private function query(GridConfig $gridConfig, array $query): ResultSet
     {
         try {
             $results = $this->getClient()->getIndex($this->getIndexName($gridConfig->getLocale()))->search(
                 $query, $gridConfig->getLimit()
             );
-        } catch (HttpException $exception) {
-            $this->logger->critical($exception->getMessage());
-
-            return new ResultSet($gridConfig->getLimit(), $gridConfig->getPage());
-        } catch (ResponseException $exception) {
+        } catch (HttpException|ResponseException $exception) {
             $this->logger->critical($exception->getMessage());
 
             return new ResultSet($gridConfig->getLimit(), $gridConfig->getPage());
@@ -145,21 +80,18 @@ class Search extends AbstractIndex
     }
 
     /**
-     * Retrieve the query to send to Elasticsearch for search.
-     *
-     * @param GridConfig $gridConfig
-     *
      * @throws ReadFileException
-     *
-     * @return array
      */
     private function getSearchQuery(GridConfig $gridConfig): array
     {
         $query = $this->searchQueryProvider->getSearchQuery();
 
         // Replace params
-        $query = str_replace('{{QUERY}}', $gridConfig->getQuery(), $query);
-        $query = str_replace('{{CHANNEL}}', $this->channelContext->getChannel()->getCode(), $query);
+        $query = str_replace(
+            ['{{QUERY}}', '{{CHANNEL}}'],
+            [$gridConfig->getQuery(), $this->channelContext->getChannel()->getCode()],
+            $query,
+        );
 
         // Convert query to array
         $query = $this->parseQuery($query);
@@ -170,7 +102,7 @@ class Search extends AbstractIndex
             $query['query']['bool']['filter'] = array_merge(
                 $query['query']['bool']['filter'], $appliedFilters['bool']['filter']
             );
-        } elseif (!empty($appliedFilters)) {
+        } elseif ($appliedFilters !== []) {
             // Will retrieve filters before we applied the current ones
             $query['post_filter'] = new ArrayObject($appliedFilters); // Use custom ArrayObject because Elastica make `toArray` on it.
         }
@@ -189,50 +121,41 @@ class Search extends AbstractIndex
 
         // Manage filters
         $aggs = AggregationHelper::buildAggregations($gridConfig->getFilters());
-        if (!empty($aggs)) {
+        if ($aggs !== []) {
             $query['aggs'] = AggregationHelper::buildAggregations($gridConfig->getFilters());
         }
 
         return $query;
     }
 
-    /**
-     * Retrieve the query to send to Elasticsearch for instant search.
-     *
-     * @param GridConfig $gridConfig
-     *
-     * @throws ReadFileException
-     *
-     * @return array
-     */
     private function getInstantQuery(GridConfig $gridConfig): array
     {
         $query = $this->searchQueryProvider->getInstantQuery();
 
         // Replace params
-        $query = str_replace('{{QUERY}}', $gridConfig->getQuery(), $query);
-        $query = str_replace('{{CHANNEL}}', $this->channelContext->getChannel()->getCode(), $query);
+        $query = str_replace(
+            ['{{QUERY}}', '{{CHANNEL}}'],
+            [$gridConfig->getQuery(), $this->channelContext->getChannel()->getCode()],
+            $query,
+        );
 
         // Convert query to array
         return $this->parseQuery($query);
     }
 
     /**
-     * Retrieve the query to send to Elasticsearch for taxon search.
-     *
-     * @param GridConfig $gridConfig
-     *
      * @throws ReadFileException
-     *
-     * @return array
      */
     private function getTaxonQuery(GridConfig $gridConfig): array
     {
         $query = $this->searchQueryProvider->getTaxonQuery();
 
         // Replace params
-        $query = str_replace('{{TAXON}}', $gridConfig->getTaxon()->getCode(), $query);
-        $query = str_replace('{{CHANNEL}}', $this->channelContext->getChannel()->getCode(), $query);
+        $query = str_replace(
+            ['{{TAXON}}', '{{CHANNEL}}'],
+            [$gridConfig->getTaxon()?->getCode(), $this->channelContext->getChannel()->getCode()],
+            $query,
+        );
 
         // Convert query to array
         $query = $this->parseQuery($query);
@@ -244,7 +167,7 @@ class Search extends AbstractIndex
             $query['query']['bool']['filter'] = array_merge(
                 $query['query']['bool']['filter'], $appliedFilters['bool']['filter']
             );
-        } elseif (!empty($appliedFilters)) {
+        } elseif ($appliedFilters !== []) {
             // Will retrieve filters before we applied the current ones
             $query['post_filter'] = new ArrayObject($appliedFilters); // Use custom ArrayObject because Elastica make `toArray` on it.
         }
@@ -263,20 +186,18 @@ class Search extends AbstractIndex
 
         // Manage filters
         $aggs = AggregationHelper::buildAggregations($gridConfig->getFilters());
-        if (!empty($aggs)) {
+        if ($aggs !== []) {
             $query['aggs'] = AggregationHelper::buildAggregations($gridConfig->getFilters());
         }
 
         return $query;
     }
 
-    /**
-     * @param string $query
-     *
-     * @return array
-     */
     private function parseQuery(string $query): array
     {
-        return Yaml::parse($query);
+        $parsedYaml = Yaml::parse($query);
+        Assert::isArray($parsedYaml);
+
+        return $parsedYaml;
     }
 }

@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of Monsieur Biz' Search plugin for Sylius.
- *
- * (c) Monsieur Biz <sylius@monsieurbiz.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Twig\Extension;
@@ -24,19 +15,16 @@ class CheckMethodExists extends AbstractExtension
     {
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('bundle_exists', [$this, 'bundleExists']),
         ];
     }
 
-    /**
-     * @psalm-suppress UndefinedDocblockClass
-     */
     public function bundleExists(string $bundle): bool
     {
-        /** @var array $bundles */
+        /** @var class-string[] $bundles */
         $bundles = $this->container->getParameter('kernel.bundles');
         return array_key_exists(
             $bundle,

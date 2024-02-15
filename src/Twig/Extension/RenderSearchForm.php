@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of Monsieur Biz' Search plugin for Sylius.
- *
- * (c) Monsieur Biz <sylius@monsieurbiz.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Twig\Extension;
@@ -24,26 +15,14 @@ use Webmozart\Assert\Assert;
 
 class RenderSearchForm extends AbstractExtension
 {
-    /** @var FormFactoryInterface */
-    private $formFactory;
-
-    /** @var Environment */
-    private $templatingEngine;
-
-    /** @var RequestStack */
-    private $requestStack;
-
     public function __construct(
-        FormFactoryInterface $formFactory,
-        Environment $templatingEngine,
-        RequestStack $requestStack
+        private FormFactoryInterface $formFactory,
+        private Environment $templatingEngine,
+        private RequestStack $requestStack
     ) {
-        $this->formFactory = $formFactory;
-        $this->templatingEngine = $templatingEngine;
-        $this->requestStack = $requestStack;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('search_form', [$this, 'createForm']),

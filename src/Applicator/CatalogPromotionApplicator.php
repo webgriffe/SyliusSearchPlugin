@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Applicator;
 
+use Elastica\Exception\ExceptionInterface;
+use MonsieurBiz\SyliusSearchPlugin\Exception\MissingParamException;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\Index\Indexer;
 use MonsieurBiz\SyliusSearchPlugin\Model\Documentable\DocumentableInterface;
 use Sylius\Bundle\CoreBundle\CatalogPromotion\Applicator\CatalogPromotionApplicatorInterface;
@@ -23,7 +25,10 @@ final class CatalogPromotionApplicator implements CatalogPromotionApplicatorInte
         $this->decoratedCatalogPromotionApplicator->applyOnVariant($variant, $catalogPromotion);
         $product = $variant->getProduct();
         if ($product instanceof DocumentableInterface) {
-            $this->indexer->indexOne($product);
+            try {
+                $this->indexer->indexOne($product);
+            } catch (ExceptionInterface|MissingParamException) {
+            }
         }
     }
 }

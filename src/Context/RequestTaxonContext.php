@@ -22,23 +22,11 @@ use Webmozart\Assert\Assert;
 
 final class RequestTaxonContext implements TaxonContextInterface
 {
-    /** @var RequestStack */
-    private $requestStack;
-
-    /** @var TaxonRepositoryInterface */
-    private $taxonRepository;
-
-    /** @var LocaleContextInterface */
-    private $localeContext;
-
     public function __construct(
-        RequestStack $requestStack,
-        TaxonRepositoryInterface $taxonRepository,
-        LocaleContextInterface $localeContext
+        private RequestStack $requestStack,
+        private TaxonRepositoryInterface $taxonRepository,
+        private LocaleContextInterface $localeContext
     ) {
-        $this->requestStack = $requestStack;
-        $this->taxonRepository = $taxonRepository;
-        $this->localeContext = $localeContext;
     }
 
     public function getTaxon(): TaxonInterface
@@ -48,7 +36,6 @@ final class RequestTaxonContext implements TaxonContextInterface
         $slug = htmlspecialchars((string) $currentRequest->get('slug'));
         $localeCode = $this->localeContext->getLocaleCode();
 
-        /** @var ?TaxonInterface $taxon */
         $taxon = $this->taxonRepository->findOneBySlug($slug, $localeCode);
 
         if (null === $taxon) {
