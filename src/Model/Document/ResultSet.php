@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of Monsieur Biz' Search plugin for Sylius.
- *
- * (c) Monsieur Biz <sylius@monsieurbiz.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Model\Document;
@@ -18,49 +9,32 @@ use JoliCode\Elastically\Result;
 use MonsieurBiz\SyliusSearchPlugin\Adapter\ResultSetAdapter;
 use Pagerfanta\Pagerfanta;
 use Sylius\Component\Core\Model\TaxonInterface;
+use function count;
 
 class ResultSet
 {
     /** @var Result[] */
-    private $results = [];
+    private array $results = [];
 
-    /** @var int */
-    private $totalHits;
-
-    /** @var int */
-    private $maxItems;
-
-    /** @var int */
-    private $page;
+    private int $totalHits;
 
     /** @var Filter[] */
-    private $filters = [];
+    private array $filters = [];
 
-    /** @var RangeFilter|null */
-    private $priceFilter;
+    private ?RangeFilter $priceFilter;
 
-    /** @var Filter|null */
-    private $taxonFilter;
+    private ?Filter $taxonFilter;
 
-    /** @var Filter|null */
-    private $mainTaxonFilter;
+    private ?Filter $mainTaxonFilter;
 
-    /** @var Pagerfanta */
-    private $pager;
+    private Pagerfanta $pager;
 
-    /**
-     * SearchResults constructor.
-     *
-     * @param int $maxItems
-     * @param int $page
-     * @param ElasticaResultSet|null $resultSet
-     * @param TaxonInterface|null $taxon
-     */
-    public function __construct(int $maxItems, int $page, ?ElasticaResultSet $resultSet = null, ?TaxonInterface $taxon = null)
-    {
-        $this->maxItems = $maxItems;
-        $this->page = $page;
-
+    public function __construct(
+        private int $maxItems,
+        private int $page,
+        ?ElasticaResultSet $resultSet = null,
+        ?TaxonInterface $taxon = null,
+    ) {
         // Empty result set
         if (null === $resultSet) {
             $this->totalHits = 0;
@@ -78,9 +52,6 @@ class ResultSet
         $this->initPager();
     }
 
-    /**
-     * Init pager with Pager Fanta.
-     */
     private function initPager(): void
     {
         $adapter = new ResultSetAdapter($this);
@@ -89,12 +60,6 @@ class ResultSet
         $this->pager->setCurrentPage($this->page);
     }
 
-    /**
-     * Init filters array depending on result aggregations.
-     *
-     * @param ElasticaResultSet $resultSet
-     * @param TaxonInterface|null $taxon
-     */
     private function initFilters(ElasticaResultSet $resultSet, ?TaxonInterface $taxon = null): void
     {
         $aggregations = $resultSet->getAggregations();
@@ -158,70 +123,43 @@ class ResultSet
         return $this->filters;
     }
 
-    /**
-     * @return int
-     */
     public function getTotalHits(): int
     {
         return $this->totalHits;
     }
 
-    /**
-     * @return Pagerfanta
-     */
     public function getPager(): Pagerfanta
     {
         return $this->pager;
     }
 
-    /**
-     * @return Filter|null
-     */
     public function getTaxonFilter(): ?Filter
     {
         return $this->taxonFilter;
     }
 
-    /**
-     * @return Filter|null
-     */
     public function getMainTaxonFilter(): ?Filter
     {
         return $this->mainTaxonFilter;
     }
 
-    /**
-     * @return RangeFilter|null
-     */
     public function getPriceFilter(): ?RangeFilter
     {
         return $this->priceFilter;
     }
 
-    /**
-     * Sort filters.
-     */
     protected function sortFilters(): void
     {
-        usort($this->filters, function($filter1, $filter2) {
-            /** @var Filter $filter1 */
-            /** @var Filter $filter2 */
-
+        usort($this->filters, static function(Filter $filter1, Filter $filter2) {
             // If same count we display the filters with more values before
             if ($filter1->getCount() === $filter2->getCount()) {
-                return \count($filter2->getValues()) > \count($filter1->getValues());
+                return count($filter2->getValues()) > count($filter1->getValues());
             }
 
             return $filter2->getCount() > $filter1->getCount();
         });
     }
 
-    /**
-     * Add taxon filter depending on aggregations.
-     *
-     * @param array $aggregations
-     * @param TaxonInterface|null $taxon
-     */
     protected function addTaxonFilter(array $aggregations, ?TaxonInterface $taxon): void
     {
         $taxonAggregation = $aggregations['taxons'] ?? null;
@@ -264,18 +202,12 @@ class ResultSet
             }
 
             // Put taxon filter in first if contains value
-            if (\count($filter->getValues())) {
+            if (count($filter->getValues())) {
                 $this->taxonFilter = $filter;
             }
         }
     }
 
-    /**
-     * Add main taxon filter depending on aggregations.
-     *
-     * @param array $aggregations
-     * @param TaxonInterface|null $taxon
-     */
     protected function addMainTaxonFilter(array $aggregations, ?TaxonInterface $taxon): void
     {
         $taxonAggregation = $aggregations['mainTaxon'] ?? null;
@@ -304,17 +236,12 @@ class ResultSet
             }
 
             // Put taxon filter in first if contains value
-            if (\count($filter->getValues())) {
+            if (count($filter->getValues())) {
                 $this->mainTaxonFilter = $filter;
             }
         }
     }
 
-    /**
-     * Add price filter depending on aggregations.
-     *
-     * @param array $aggregations
-     */
     protected function addPriceFilter(array $aggregations): void
     {
         $priceAggregation = $aggregations['price'] ?? null;

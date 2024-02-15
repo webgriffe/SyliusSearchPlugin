@@ -12,12 +12,8 @@ use MonsieurBiz\SyliusSearchPlugin\Provider\UrlParamsProvider;
 class RenderDocumentUrlHelper
 {
     /**
-     * @param Result $document
-     *
-     * @throws MissingLocaleException
      * @throws NotSupportedTypeException
-     *
-     * @return UrlParamsProvider
+     * @throws MissingLocaleException
      */
     public function getUrlParams(Result $document): UrlParamsProvider
     {

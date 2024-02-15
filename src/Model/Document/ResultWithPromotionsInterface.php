@@ -10,12 +10,7 @@ namespace MonsieurBiz\SyliusSearchPlugin\Model\Document;
 interface ResultWithPromotionsInterface extends ResultInterface
 {
     /**
-     * @param string $channel
-     * @param string $currency
-     * @param int $value
      * @param string[] $appliedPromotions
-     *
-     * @return ResultInterface
      */
     public function addPriceWithPromotions(string $channel, string $currency, int $value, array $appliedPromotions = []): ResultInterface;
 }

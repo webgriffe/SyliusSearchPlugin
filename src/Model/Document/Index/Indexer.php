@@ -1,28 +1,18 @@
 <?php
 
-/*
- * This file is part of Monsieur Biz' Search plugin for Sylius.
- *
- * (c) Monsieur Biz <sylius@monsieurbiz.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Model\Document\Index;
 
 use Elastica\Document;
+use Elastica\Exception\ExceptionInterface;
 use Elastica\Exception\ResponseException;
 use JoliCode\Elastically\Client;
 use MonsieurBiz\SyliusSearchPlugin\Exception\MissingParamException;
 use MonsieurBiz\SyliusSearchPlugin\Exception\ReadOnlyIndexException;
-use MonsieurBiz\SyliusSearchPlugin\Model\Document\Result;
+use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultInterface;
 use MonsieurBiz\SyliusSearchPlugin\Model\Documentable\DocumentableInterface;
 use MonsieurBiz\SyliusSearchPlugin\Provider\DocumentRepositoryProvider;
-use MonsieurBiz\SyliusSearchPlugin\Provider\SearchQueryProvider;
-use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Locale\Model\LocaleInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -30,49 +20,31 @@ use Webmozart\Assert\Assert;
 
 class Indexer extends AbstractIndex
 {
-    /**
-     * @var DocumentRepositoryProvider
-     */
-    protected $documentRepositoryProvider;
-
-    /** @var RepositoryInterface */
-    private $localeRepository;
-
-    /** @var array */
-    private $locales = [];
+    /** @var string[] */
+    private array $locales = [];
 
     /**
-     * PopulateCommand constructor.
-     *
-     * @param Client $client
-     * @param DocumentRepositoryProvider $documentRepositoryProvider
-     * @param RepositoryInterface $localeRepository
-     * @param SearchQueryProvider $searchQueryProvider
-     * @param LoggerInterface $logger
+     * @param RepositoryInterface<LocaleInterface> $localeRepository
      */
     public function __construct(
         Client $client,
         DocumentRepositoryProvider $documentRepositoryProvider,
-        RepositoryInterface $localeRepository
+        private RepositoryInterface $localeRepository
     ) {
         parent::__construct($client);
         $this->documentRepositoryProvider = $documentRepositoryProvider;
-        $this->localeRepository = $localeRepository;
     }
 
     /**
-     * Retrieve all available locales.
-     *
-     * @return array
+     * @return string[]
      */
     public function getLocales(): array
     {
-        if (empty($this->locales)) {
-            /** @var LocaleInterface[] $locales */
+        if ($this->locales === []) {
             $locales = $this->localeRepository->findAll();
             $this->locales = array_map(
-                function(LocaleInterface $locale) {
-                    return $locale->getCode();
+                static function(LocaleInterface $locale) {
+                    return (string) $locale->getCode();
                 },
                 $locales
             );
@@ -82,9 +54,9 @@ class Indexer extends AbstractIndex
     }
 
     /**
-     * Index all documents in all locales.
-     *
-     * @throws \Exception
+     * @throws ReadOnlyIndexException
+     * @throws MissingParamException
+     * @throws ExceptionInterface
      */
     public function indexAll(): void
     {
@@ -94,11 +66,9 @@ class Indexer extends AbstractIndex
     }
 
     /**
-     * Index all document for a locale.
-     *
-     * @param string $locale
-     *
-     * @throws \Exception
+     * @throws ExceptionInterface
+     * @throws ReadOnlyIndexException
+     * @throws MissingParamException
      */
     public function indexAllByLocale(string $locale): void
     {
@@ -113,11 +83,14 @@ class Indexer extends AbstractIndex
             } else {
                 $documents = $repository->findAll();
             }
-            /** @var DocumentableInterface $document */
+            /** @var DocumentableInterface|mixed $document */
             foreach ($documents as $document) {
                 Assert::isInstanceOf($document, DocumentableInterface::class);
                 $convertToDocument = $document->convertToDocument($locale);
-                $this->getIndexer()->scheduleIndex($newIndex, new Document($convertToDocument->getUniqId(), $convertToDocument));
+                $this->getIndexer()->scheduleIndex(
+                    $newIndex,
+                    new Document($convertToDocument->getUniqId(), $convertToDocument),
+                );
             }
         }
 
@@ -129,6 +102,7 @@ class Indexer extends AbstractIndex
         $this->getIndexer()->flush();
 
         $this->getIndexer()->refresh($indexName);
+
         try {
             $this->getIndexBuilder()->purgeOldIndices($indexName);
         } catch (ResponseException $exception) {
@@ -137,42 +111,38 @@ class Indexer extends AbstractIndex
     }
 
     /**
-     * Index a document for all locales.
-     *
-     * @param DocumentableInterface $subject
-     *
-     * @throws \Exception
+     * @throws ExceptionInterface
+     * @throws MissingParamException
      */
     public function indexOne(DocumentableInterface $subject): void
     {
         foreach ($this->getLocales() as $locale) {
-            $this->indexOneByLocale($subject->convertToDocument($locale), $locale);
+            $this->indexOneByLocale(
+                $subject->convertToDocument($locale),
+                $locale,
+            );
+
             $this->getIndexer()->flush();
         }
     }
 
     /**
-     * Index a document for one locale.
-     *
-     * @param Result $document
-     * @param string $locale
-     *
      * @throws MissingParamException
+     * @throws ExceptionInterface
      */
-    public function indexOneByLocale(Result $document, string $locale): void
+    public function indexOneByLocale(ResultInterface $result, string $locale): void
     {
+        $document = new Document($result->getUniqId(), $result);
+
         $this->getIndexer()->scheduleIndex(
             $this->getClient()->getIndex($this->getIndexName($locale)),
-            new Document($document->getUniqId(), $document)
+            $document,
         );
     }
 
     /**
-     * Remove a document for all locales.
-     *
-     * @param DocumentableInterface $subject
-     *
-     * @throws \Exception
+     * @throws ExceptionInterface
+     * @throws MissingParamException
      */
     public function removeOne(DocumentableInterface $subject): void
     {
@@ -183,14 +153,10 @@ class Indexer extends AbstractIndex
     }
 
     /**
-     * Remove a document for all locales.
-     *
-     * @param Result $document
-     * @param string $locale
-     *
+     * @throws ExceptionInterface
      * @throws MissingParamException
      */
-    public function removeOneByLocale(Result $document, string $locale): void
+    public function removeOneByLocale(ResultInterface $document, string $locale): void
     {
         $this->getIndexer()->scheduleDelete(
             $this->getClient()->getIndex($this->getIndexName($locale)),

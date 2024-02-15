@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of Monsieur Biz' Search plugin for Sylius.
- *
- * (c) Monsieur Biz <sylius@monsieurbiz.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Controller;
@@ -20,7 +11,7 @@ use MonsieurBiz\SyliusSearchPlugin\Helper\RenderDocumentUrlHelper;
 use MonsieurBiz\SyliusSearchPlugin\Model\Config\GridConfig;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\Index\Search;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\Result;
-use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultSet;
+use NumberFormatter;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Currency\Context\CurrencyContextInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,56 +22,18 @@ use Twig\Environment;
 
 class SearchController extends AbstractController
 {
-    public const SORT_ASC = 'asc';
-    public const SORT_DESC = 'desc';
-
-    /** @var Environment */
-    private $templatingEngine;
-
-    /** @var Search */
-    private $documentSearch;
-
-    /** @var ChannelContextInterface */
-    private $channelContext;
-
-    /** @var CurrencyContextInterface */
-    private $currencyContext;
-
-    /** @var TaxonContextInterface */
-    private $taxonContext;
-
-    /** @var GridConfig */
-    private $gridConfig;
-
-    /** @var RenderDocumentUrlHelper */
-    private $renderDocumentUrlHelper;
-
     public function __construct(
-        Environment $templatingEngine,
-        Search $documentSearch,
-        ChannelContextInterface $channelContext,
-        CurrencyContextInterface $currencyContext,
-        TaxonContextInterface $taxonContext,
-        GridConfig $gridConfig,
-        RenderDocumentUrlHelper $renderDocumentUrlHelper
+        private Environment $templatingEngine,
+        private Search $documentSearch,
+        private ChannelContextInterface $channelContext,
+        private CurrencyContextInterface $currencyContext,
+        private TaxonContextInterface $taxonContext,
+        private GridConfig $gridConfig,
+        private RenderDocumentUrlHelper $renderDocumentUrlHelper
     ) {
-        $this->templatingEngine = $templatingEngine;
-        $this->documentSearch = $documentSearch;
-        $this->channelContext = $channelContext;
-        $this->currencyContext = $currencyContext;
-        $this->taxonContext = $taxonContext;
-        $this->gridConfig = $gridConfig;
-        $this->renderDocumentUrlHelper = $renderDocumentUrlHelper;
     }
 
-    /**
-     * Post search.
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
-    public function postAction(Request $request)
+    public function postAction(Request $request): Response
     {
         $inputBag = $request->request->all('monsieurbiz_searchplugin_search');
         /** @var ?string $query */
@@ -90,18 +43,10 @@ class SearchController extends AbstractController
         }
 
         return new RedirectResponse(
-            $this->generateUrl('monsieurbiz_sylius_search_search',
-                ['query' => urlencode($query)])
+            $this->generateUrl('monsieurbiz_sylius_search_search', ['query' => urlencode($query)])
         );
     }
 
-    /**
-     * Perform the search action & display results. User can add page, limit or sorting.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function searchAction(Request $request): Response
     {
         // Init grid config depending on request
@@ -128,7 +73,7 @@ class SearchController extends AbstractController
 
         // Get number formatter for currency
         $currencyCode = $this->currencyContext->getCurrencyCode();
-        $formatter = new \NumberFormatter($request->getLocale() . '@currency=' . $currencyCode, \NumberFormatter::CURRENCY);
+        $formatter = new NumberFormatter($request->getLocale() . '@currency=' . $currencyCode, NumberFormatter::CURRENCY);
 
         // Display result list
         return new Response($this->templatingEngine->render('@MonsieurBizSyliusSearchPlugin/Search/result.html.twig', [
@@ -137,18 +82,11 @@ class SearchController extends AbstractController
             'resultSet' => $resultSet,
             'channel' => $this->channelContext->getChannel(),
             'currencyCode' => $this->currencyContext->getCurrencyCode(),
-            'moneySymbol' => $formatter->getSymbol(\NumberFormatter::CURRENCY_SYMBOL),
+            'moneySymbol' => $formatter->getSymbol(NumberFormatter::CURRENCY_SYMBOL),
             'gridConfig' => $this->gridConfig,
         ]));
     }
 
-    /**
-     * Perform the instant search action & display results.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function instantAction(Request $request): Response
     {
         // Init grid config depending on request
@@ -167,13 +105,6 @@ class SearchController extends AbstractController
         ]));
     }
 
-    /**
-     * Perform the taxon action & display results.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function taxonAction(Request $request): Response
     {
         // Init grid config depending on request
@@ -184,7 +115,7 @@ class SearchController extends AbstractController
 
         // Get number formatter for currency
         $currencyCode = $this->currencyContext->getCurrencyCode();
-        $formatter = new \NumberFormatter($request->getLocale() . '@currency=' . $currencyCode, \NumberFormatter::CURRENCY);
+        $formatter = new NumberFormatter($request->getLocale() . '@currency=' . $currencyCode, NumberFormatter::CURRENCY);
 
         // Display result list
         return new Response($this->templatingEngine->render('@MonsieurBizSyliusSearchPlugin/Taxon/result.html.twig', [
@@ -193,7 +124,7 @@ class SearchController extends AbstractController
             'resultSet' => $resultSet,
             'channel' => $this->channelContext->getChannel(),
             'currencyCode' => $this->currencyContext->getCurrencyCode(),
-            'moneySymbol' => $formatter->getSymbol(\NumberFormatter::CURRENCY_SYMBOL),
+            'moneySymbol' => $formatter->getSymbol(NumberFormatter::CURRENCY_SYMBOL),
             'gridConfig' => $this->gridConfig,
         ]));
     }
