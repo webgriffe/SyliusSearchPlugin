@@ -15,13 +15,16 @@ class PopulateCommand extends Command
 {
     protected static $defaultName = 'monsieurbiz:search:populate';
 
+    /**
+     * @psalm-suppress MixedArgument
+     */
     public function __construct(private Indexer $documentIndexer)
     {
-        parent::__construct(static::$defaultName);
+        parent::__construct(self::$defaultName);
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|\Elastica\Exception\ExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

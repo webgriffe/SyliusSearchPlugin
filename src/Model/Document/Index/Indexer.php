@@ -132,6 +132,7 @@ class Indexer extends AbstractIndex
      */
     public function indexOneByLocale(ResultInterface $result, string $locale): void
     {
+        /** @psalm-suppress InvalidArgument */
         $document = new Document($result->getUniqId(), $result);
 
         $this->getIndexer()->scheduleIndex(

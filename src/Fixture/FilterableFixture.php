@@ -25,7 +25,10 @@ class FilterableFixture extends AbstractResourceFixture implements FilterableFix
 
     protected function configureResourceNode(ArrayNodeDefinition $resourceNode): void
     {
-        /** @phpstan-ignore-next-line */
+        /**
+         * @phpstan-ignore-next-line
+         * @psalm-suppress UndefinedInterfaceMethod
+         */
         $resourceNode
             ->children()
             ->scalarNode('attribute')->end()

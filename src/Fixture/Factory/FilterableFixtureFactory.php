@@ -29,6 +29,9 @@ class FilterableFixtureFactory extends AbstractExampleFactory implements Filtera
         $this->configureOptions($this->optionsResolver);
     }
 
+    /**
+     * @psalm-suppress InvalidArgument
+     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
