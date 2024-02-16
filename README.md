@@ -74,7 +74,7 @@ The default module configuration is :
 
 ```yaml
 imports:
-    - { resource: "@MonsieurBizSyliusSearchPlugin/Resources/config/config.yaml" }
+    - { resource: "@MonsieurBizSyliusSearchPlugin/config/config.yaml" }
 
 monsieur_biz_sylius_search:
     files:

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace MonsieurBiz\SyliusSearchPlugin\Model\Documentable;
 
 use Doctrine\Common\Collections\Collection;
-use MonsieurBiz\SyliusSearchPlugin\generated\Model\Taxon as DocumentTaxon;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\Result;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultInterface;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultWithPromotionsInterface;
+use MonsieurBiz\SyliusSearchPlugin\Model\Taxon as DocumentTaxon;
 use Sylius\Component\Attribute\AttributeType\SelectAttributeType;
 use Sylius\Component\Attribute\Model\AttributeValueInterface;
 use Sylius\Component\Core\Model\CatalogPromotionInterface;

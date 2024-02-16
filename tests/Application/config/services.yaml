@@ -10,11 +10,12 @@ services:
             $config:
                 host: '%env(MONSIEURBIZ_SEARCHPLUGIN_ES_HOST)%'
                 port: '%env(MONSIEURBIZ_SEARCHPLUGIN_ES_PORT)%'
-                elastically_mappings_directory: '%kernel.project_dir%/../../src/Resources/config/elasticsearch/mappings'
+                elastically_mappings_directory: '%kernel.project_dir%/../../config/elasticsearch/mappings'
                 elastically_index_class_mapping:
                     documents-fr: \MonsieurBiz\SyliusSearchPlugin\Model\Document\Result
                     documents-en: \MonsieurBiz\SyliusSearchPlugin\Model\Document\Result
-                    documents-en_us: \MonsieurBiz\SyliusSearchPlugin\Model\Document\Result
+                    documents-it: \MonsieurBiz\SyliusSearchPlugin\Model\Document\Result
+                    documents-es: \MonsieurBiz\SyliusSearchPlugin\Model\Document\Result
                 elastically_bulk_size: 100
 
 sylius_fixtures:

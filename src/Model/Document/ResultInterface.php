@@ -8,8 +8,8 @@ use MonsieurBiz\SyliusSearchPlugin\Exception\MissingLocaleException;
 use MonsieurBiz\SyliusSearchPlugin\Exception\MissingParamException;
 use MonsieurBiz\SyliusSearchPlugin\Exception\MissingPriceException;
 use MonsieurBiz\SyliusSearchPlugin\Exception\NotSupportedTypeException;
-use MonsieurBiz\SyliusSearchPlugin\generated\Model\Attributes;
-use MonsieurBiz\SyliusSearchPlugin\generated\Model\Price;
+use MonsieurBiz\SyliusSearchPlugin\Model\Attributes;
+use MonsieurBiz\SyliusSearchPlugin\Model\Price;
 use MonsieurBiz\SyliusSearchPlugin\Provider\UrlParamsProvider;
 
 interface ResultInterface

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MonsieurBiz\SyliusSearchPlugin\generated\Model;
+namespace MonsieurBiz\SyliusSearchPlugin\Model;
 
 class Document
 {
