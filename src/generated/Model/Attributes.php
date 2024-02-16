@@ -6,20 +6,16 @@ namespace MonsieurBiz\SyliusSearchPlugin\generated\Model;
 
 class Attributes
 {
-    /** @var string|null */
-    protected $code;
+    protected ?string $code;
 
-    /** @var string|null */
-    protected $name;
+    protected ?string $name;
 
     /** @var string[]|null */
-    protected $value;
+    protected ?array $value;
 
-    /** @var string|null */
-    protected $locale;
+    protected ?string $locale;
 
-    /** @var int|null */
-    protected $score;
+    protected ?int $score;
 
     public function getCode(): ?string
     {
