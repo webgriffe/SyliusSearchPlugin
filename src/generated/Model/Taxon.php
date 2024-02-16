@@ -6,15 +6,15 @@ namespace MonsieurBiz\SyliusSearchPlugin\generated\Model;
 
 class Taxon
 {
-    protected ?string $name;
+    protected ?string $name = null;
 
-    protected ?string $code;
+    protected ?string $code = null;
 
-    protected ?int $position;
+    protected ?int $position = null;
 
-    protected ?int $level;
+    protected ?int $level = null;
 
-    protected ?int $productPosition;
+    protected ?int $productPosition = null;
 
     public function getName(): ?string
     {

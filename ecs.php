@@ -11,6 +11,9 @@ return static function (ECSConfig $ecsConfig): void {
         __DIR__ . '/tests/Behat',
         __DIR__ . '/ecs.php',
     ]);
+    $ecsConfig->skip([
+        __DIR__ . '/src/generated',
+    ]);
 
     $ecsConfig->import('vendor/sylius-labs/coding-standard/ecs.php');
 

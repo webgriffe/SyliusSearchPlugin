@@ -6,36 +6,36 @@ namespace MonsieurBiz\SyliusSearchPlugin\generated\Model;
 
 class Document
 {
-    protected ?string $type;
+    protected ?string $type = null;
 
-    protected ?string $code;
+    protected ?string $code = null;
 
-    protected ?int $id;
+    protected ?int $id = null;
 
-    protected ?bool $enabled;
+    protected ?bool $enabled = null;
 
-    protected ?bool $inStock;
+    protected ?bool $inStock = null;
 
-    protected ?string $slug;
+    protected ?string $slug = null;
 
-    protected ?string $image;
+    protected ?string $image = null;
 
     /** @var string[]|null */
-    protected ?array $channel;
+    protected ?array $channel = null;
 
-    protected ?Taxon $mainTaxon;
+    protected ?Taxon $mainTaxon = null;
 
     /** @var Taxon[]|null */
-    protected ?array $taxon;
+    protected ?array $taxon = null;
 
     /** @var Attributes[]|null */
-    protected ?array $attributes;
+    protected ?array $attributes = null;
 
     /** @var Price[]|null */
-    protected ?array $price;
+    protected ?array $price = null;
 
     /** @var Price[]|null */
-    protected ?array $originalPrice;
+    protected ?array $originalPrice = null;
 
     public function getType(): ?string
     {
@@ -144,6 +144,9 @@ class Document
         return $this->mainTaxon;
     }
 
+    /**
+     * @param Taxon|null $mainTaxon
+     */
     public function setMainTaxon(?Taxon $mainTaxon): self
     {
         $this->mainTaxon = $mainTaxon;
