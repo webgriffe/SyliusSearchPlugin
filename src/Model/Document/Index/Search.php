@@ -6,6 +6,7 @@ namespace MonsieurBiz\SyliusSearchPlugin\Model\Document\Index;
 
 use Elastica\Exception\Connection\HttpException;
 use Elastica\Exception\ResponseException;
+use Elastica\Query;
 use JoliCode\Elastically\Client;
 use MonsieurBiz\SyliusSearchPlugin\Exception\ReadFileException;
 use MonsieurBiz\SyliusSearchPlugin\Helper\AggregationHelper;
@@ -67,8 +68,10 @@ class Search extends AbstractIndex
     private function query(GridConfig $gridConfig, array $query): ResultSet
     {
         try {
+            /** @psalm-suppress InvalidArgument */
             $results = $this->getClient()->getIndex($this->getIndexName($gridConfig->getLocale()))->search(
-                $query, $gridConfig->getLimit()
+                $query,
+                $gridConfig->getLimit(),
             );
         } catch (HttpException|ResponseException $exception) {
             $this->logger->critical($exception->getMessage());
@@ -89,7 +92,7 @@ class Search extends AbstractIndex
         // Replace params
         $query = str_replace(
             ['{{QUERY}}', '{{CHANNEL}}'],
-            [$gridConfig->getQuery(), $this->channelContext->getChannel()->getCode()],
+            [$gridConfig->getQuery(), (string) $this->channelContext->getChannel()->getCode()],
             $query,
         );
 
@@ -131,11 +134,12 @@ class Search extends AbstractIndex
     private function getInstantQuery(GridConfig $gridConfig): array
     {
         $query = $this->searchQueryProvider->getInstantQuery();
+        Assert::notNull($query);
 
         // Replace params
         $query = str_replace(
             ['{{QUERY}}', '{{CHANNEL}}'],
-            [$gridConfig->getQuery(), $this->channelContext->getChannel()->getCode()],
+            [$gridConfig->getQuery(), (string) $this->channelContext->getChannel()->getCode()],
             $query,
         );
 
@@ -149,11 +153,12 @@ class Search extends AbstractIndex
     private function getTaxonQuery(GridConfig $gridConfig): array
     {
         $query = $this->searchQueryProvider->getTaxonQuery();
+        Assert::notNull($query);
 
         // Replace params
         $query = str_replace(
             ['{{TAXON}}', '{{CHANNEL}}'],
-            [$gridConfig->getTaxon()?->getCode(), $this->channelContext->getChannel()->getCode()],
+            [(string) $gridConfig->getTaxon()?->getCode(), (string) $this->channelContext->getChannel()->getCode()],
             $query,
         );
 
@@ -193,10 +198,13 @@ class Search extends AbstractIndex
         return $query;
     }
 
+    /**
+     * @return array{query: array{bool: array{filter: array, must: array, should: array}}}
+     */
     private function parseQuery(string $query): array
     {
+        /** @var array{query: array{bool: array{filter: array, must: array, should: array}}} $parsedYaml */
         $parsedYaml = Yaml::parse($query);
-        Assert::isArray($parsedYaml);
 
         return $parsedYaml;
     }

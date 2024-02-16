@@ -37,8 +37,7 @@ final class RequestTaxonContext implements TaxonContextInterface
         $localeCode = $this->localeContext->getLocaleCode();
 
         $taxon = $this->taxonRepository->findOneBySlug($slug, $localeCode);
-
-        if (null === $taxon) {
+        if (!$taxon instanceof TaxonInterface) {
             throw new TaxonNotFoundException();
         }
 

@@ -33,7 +33,11 @@ class Result extends Document implements ResultInterface, ResultWithPromotionsIn
 
     public function getAttribute(string $code): ?Attributes
     {
-        foreach ($this->getAttributes() as $attribute) {
+        $attributes = $this->getAttributes();
+        if (null === $attributes) {
+            return null;
+        }
+        foreach ($attributes as $attribute) {
             if ($attribute->getCode() === $code) {
                 return $attribute;
             }
@@ -44,10 +48,11 @@ class Result extends Document implements ResultInterface, ResultWithPromotionsIn
 
     public function getPriceByChannelAndCurrency(string $channelCode, string $currencyCode): ?Price
     {
-        if (null === $this->getPrice()) {
+        $prices = $this->getPrice();
+        if (null === $prices) {
             return null;
         }
-        foreach ($this->getPrice() as $price) {
+        foreach ($prices as $price) {
             if ($price->getChannel() === $channelCode && $price->getCurrency() === $currencyCode) {
                 return $price;
             }
@@ -62,11 +67,12 @@ class Result extends Document implements ResultInterface, ResultWithPromotionsIn
 
     public function getOriginalPriceByChannelAndCurrency(string $channelCode, string $currencyCode): ?Price
     {
-        if (null === $this->getOriginalPrice()) {
+        $originalPrice = $this->getOriginalPrice();
+        if (null === $originalPrice) {
             return null;
         }
 
-        foreach ($this->getOriginalPrice() as $price) {
+        foreach ($originalPrice as $price) {
             if ($price->getChannel() === $channelCode && $price->getCurrency() === $currencyCode) {
                 return $price;
             }
@@ -103,7 +109,8 @@ class Result extends Document implements ResultInterface, ResultWithPromotionsIn
 
     public function addChannel(string $channel): ResultInterface
     {
-        $channelCodes = $this->getChannel() ? array_unique(array_merge($this->getChannel(), [$channel])) : [$channel];
+        $channelCodeList = $this->getChannel();
+        $channelCodes = $channelCodeList !== null ? array_unique(array_merge($channelCodeList, [$channel])) : [$channel];
         $this->setChannel($channelCodes);
 
         return $this;

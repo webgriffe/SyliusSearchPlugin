@@ -217,14 +217,26 @@ class GridConfig
         return $this->filterableOptions;
     }
 
+    /**
+     * @psalm-suppress MixedArrayAccess
+     */
     public function haveToApplyManuallyFilters(): bool
     {
-        return $this->config['filters']['apply_manually'] ?? false;
+        /** @var bool|null $applyManually */
+        $applyManually = $this->config['filters']['apply_manually'];
+
+        return $applyManually ?? false;
     }
 
+    /**
+     * @psalm-suppress MixedArrayAccess
+     */
     public function useMainTaxonForFilter(): bool
     {
-        return $this->config['filters']['use_main_taxon'] ?? false;
+        /** @var bool|null $useMainTaxon */
+        $useMainTaxon = $this->config['filters']['use_main_taxon'];
+
+        return $useMainTaxon ?? false;
     }
 
     /**
