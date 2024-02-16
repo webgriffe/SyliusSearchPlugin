@@ -6,44 +6,36 @@ namespace MonsieurBiz\SyliusSearchPlugin\generated\Model;
 
 class Document
 {
-    /** @var string|null */
-    protected $type;
+    protected ?string $type;
 
-    /** @var string|null */
-    protected $code;
+    protected ?string $code;
 
-    /** @var int|null */
-    protected $id;
+    protected ?int $id;
 
-    /** @var bool|null */
-    protected $enabled;
+    protected ?bool $enabled;
 
-    /** @var bool|null */
-    protected $inStock;
+    protected ?bool $inStock;
 
-    /** @var string|null */
-    protected $slug;
+    protected ?string $slug;
 
-    /** @var string|null */
-    protected $image;
+    protected ?string $image;
 
     /** @var string[]|null */
-    protected $channel;
+    protected ?array $channel;
 
-    /** @var Taxon|null */
-    protected $mainTaxon;
+    protected ?Taxon $mainTaxon;
 
     /** @var Taxon[]|null */
-    protected $taxon;
+    protected ?array $taxon;
 
     /** @var Attributes[]|null */
-    protected $attributes;
+    protected ?array $attributes;
 
     /** @var Price[]|null */
-    protected $price;
+    protected ?array $price;
 
     /** @var Price[]|null */
-    protected $originalPrice;
+    protected ?array $originalPrice;
 
     public function getType(): ?string
     {

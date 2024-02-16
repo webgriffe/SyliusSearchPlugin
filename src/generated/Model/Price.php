@@ -6,17 +6,14 @@ namespace MonsieurBiz\SyliusSearchPlugin\generated\Model;
 
 class Price
 {
-    /** @var string|null */
-    protected $channel;
+    protected ?string $channel;
 
-    /** @var string|null */
-    protected $currency;
+    protected ?string $currency;
 
-    /** @var int|null */
-    protected $value;
+    protected ?int $value;
 
     /** @var string[]|null */
-    protected $appliedPromotions;
+    protected ?array $appliedPromotions;
 
     public function getChannel(): ?string
     {
