@@ -1,5 +1,5 @@
 <div class="item">
-    {% set currentValue = app.request.query.get( filter.code ) %}
+    {% set currentValue = app.request.query.all( filter.code ) %}
     {% set minValue = (currentValue['min'] is defined) ? currentValue['min'] : filter.min %}
     {% set maxValue = (currentValue['max'] is defined) ? currentValue['max'] : filter.max %}
     <div class="filter-item" id="{{ 'filter-' ~ filter.code }}">

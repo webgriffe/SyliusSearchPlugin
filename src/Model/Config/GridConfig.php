@@ -41,7 +41,7 @@ class GridConfig
     /** @var string[] */
     private array $sorting;
 
-    private ?TaxonInterface $taxon;
+    private ?TaxonInterface $taxon = null;
 
     private array $appliedFilters;
 

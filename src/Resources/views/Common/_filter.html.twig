@@ -1,4 +1,4 @@
-{% set appliedAttributes = app.request.query.get('attribute') %}
+{% set appliedAttributes = app.request.query.all('attribute') %}
 {% set currentValues = (appliedAttributes[filter.code] is defined) ? appliedAttributes[filter.code] : [] %}
 {% if filter.values|length > 1 or currentValues is not empty %}
 <div class="item">
