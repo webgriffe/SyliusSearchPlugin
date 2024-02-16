@@ -46,10 +46,10 @@ class GridConfig
     private array $appliedFilters;
 
     /** @var string[]|null */
-    private ?array $filterableAttributes;
+    private ?array $filterableAttributes = null;
 
     /** @var string[]|null */
-    private ?array $filterableOptions;
+    private ?array $filterableOptions = null;
 
     /**
      * @param array $config

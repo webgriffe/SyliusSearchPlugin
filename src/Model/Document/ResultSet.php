@@ -21,11 +21,11 @@ class ResultSet
     /** @var Filter[] */
     private array $filters = [];
 
-    private ?RangeFilter $priceFilter;
+    private ?RangeFilter $priceFilter = null;
 
-    private ?Filter $taxonFilter;
+    private ?Filter $taxonFilter = null;
 
-    private ?Filter $mainTaxonFilter;
+    private ?Filter $mainTaxonFilter = null;
 
     private Pagerfanta $pager;
 
