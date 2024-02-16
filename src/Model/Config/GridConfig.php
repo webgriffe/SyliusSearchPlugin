@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Model\Config;
 
+use function in_array;
 use MonsieurBiz\SyliusSearchPlugin\Exception\UnknownGridConfigType;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Product\Model\ProductAttributeInterface;
 use Sylius\Component\Product\Model\ProductOptionInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use function in_array;
 
 class GridConfig
 {
     public const SEARCH_TYPE = 'search';
+
     public const TAXON_TYPE = 'taxon';
+
     public const INSTANT_TYPE = 'instant';
 
     public const SORT_ASC = 'asc';
+
     public const SORT_DESC = 'desc';
 
     public const FALLBACK_LIMIT = 10;
@@ -52,14 +55,13 @@ class GridConfig
     private ?array $filterableOptions = null;
 
     /**
-     * @param array $config
      * @param RepositoryInterface<ProductAttributeInterface> $productAttributeRepository
      * @param RepositoryInterface<ProductOptionInterface> $productOptionRepository
      */
     public function __construct(
         private array $config,
         private RepositoryInterface $productAttributeRepository,
-        private RepositoryInterface $productOptionRepository
+        private RepositoryInterface $productOptionRepository,
     ) {
     }
 
@@ -95,6 +97,7 @@ class GridConfig
                 }
 
                 $this->isInitialized = true;
+
                 break;
             case self::TAXON_TYPE:
                 // Set type, locale, page and taxon
@@ -123,6 +126,7 @@ class GridConfig
                     $this->limit = $this->config['default_limit']['taxon'] ?? self::FALLBACK_LIMIT;
                 }
                 $this->isInitialized = true;
+
                 break;
             case self::INSTANT_TYPE:
                 // Set type, locale, page and query
@@ -134,6 +138,7 @@ class GridConfig
                 // Set limit
                 $this->limit = $this->config['default_limit']['instant'] ?? self::FALLBACK_LIMIT;
                 $this->isInitialized = true;
+
                 break;
             default:
                 throw new UnknownGridConfigType();

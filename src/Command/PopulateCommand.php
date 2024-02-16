@@ -29,6 +29,7 @@ class PopulateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Starting generating index!');
+
         try {
             $this->documentIndexer->indexAll();
         } catch (ReadOnlyIndexException) {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Twig\Extension;
 
+use function array_key_exists;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use function array_key_exists;
 
 class CheckMethodExists extends AbstractExtension
 {
@@ -26,9 +26,10 @@ class CheckMethodExists extends AbstractExtension
     {
         /** @var class-string[] $bundles */
         $bundles = $this->container->getParameter('kernel.bundles');
+
         return array_key_exists(
             $bundle,
-            $bundles
+            $bundles,
         );
     }
 }

@@ -23,7 +23,7 @@ class SortHelper
         string $order,
         string $nestedPath,
         string $sortFilterField,
-        string $sortFilterValue
+        string $sortFilterValue,
     ): array {
         return [
             $field => [

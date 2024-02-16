@@ -23,7 +23,7 @@ class FilterableFixtureFactory extends AbstractExampleFactory implements Filtera
      */
     public function __construct(
         protected RepositoryInterface $productAttributeRepository,
-        protected RepositoryInterface $productOptionRepository
+        protected RepositoryInterface $productOptionRepository,
     ) {
         $this->optionsResolver = new OptionsResolver();
         $this->configureOptions($this->optionsResolver);

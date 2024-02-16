@@ -13,7 +13,7 @@ class FilterableFixture extends AbstractResourceFixture implements FilterableFix
 {
     public function __construct(
         EntityManagerInterface $productManager,
-        FilterableFixtureFactoryInterface $exampleFactory
+        FilterableFixtureFactoryInterface $exampleFactory,
     ) {
         parent::__construct($productManager, $exampleFactory);
     }
@@ -27,6 +27,7 @@ class FilterableFixture extends AbstractResourceFixture implements FilterableFix
     {
         /**
          * @phpstan-ignore-next-line
+         *
          * @psalm-suppress UndefinedInterfaceMethod
          */
         $resourceNode

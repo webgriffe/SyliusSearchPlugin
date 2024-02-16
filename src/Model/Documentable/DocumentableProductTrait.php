@@ -17,9 +17,9 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\Image;
 use Sylius\Component\Core\Model\ProductTaxonInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Currency\Model\CurrencyInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
 
 trait DocumentableProductTrait
 {
@@ -65,8 +65,9 @@ trait DocumentableProductTrait
 
     protected function addImagesInDocument(ResultInterface $document): ResultInterface
     {
-        /** @var Image $image */
-        if ($image = $this->getImages()->first()) {
+        /** @var Image|false $image */
+        $image = $this->getImages()->first();
+        if ($image !== false) {
             $document->setImage($image->getPath());
         }
 
@@ -124,7 +125,8 @@ trait DocumentableProductTrait
     protected function addTaxonsInDocument(ResultInterface $document, string $locale): ResultInterface
     {
         /** @var TaxonInterface $mainTaxon */
-        if ($mainTaxon = $this->getMainTaxon()) {
+        $mainTaxon = $this->getMainTaxon();
+        if ($mainTaxon) {
             $taxon = new DocumentTaxon();
             $taxon
                 ->setName($mainTaxon->getTranslation($locale)->getName())
@@ -142,7 +144,7 @@ trait DocumentableProductTrait
                 $productTaxon->getTaxon()->getTranslation($locale)->getName(),
                 $productTaxon->getTaxon()->getPosition(),
                 $productTaxon->getTaxon()->getLevel(),
-                $productTaxon->getPosition()
+                $productTaxon->getPosition(),
             );
         }
 
@@ -231,6 +233,7 @@ trait DocumentableProductTrait
                 return true;
             }
         }
+
         return false;
     }
 }

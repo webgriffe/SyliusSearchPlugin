@@ -13,7 +13,9 @@ final class UnknownGridConfigType extends NotFoundHttpException
     {
         parent::__construct(sprintf(
             'Unknown GridConfig type, available are "%s", "%s" and "%s"',
-            GridConfig::SEARCH_TYPE, GridConfig::TAXON_TYPE, GridConfig::INSTANT_TYPE
+            GridConfig::SEARCH_TYPE,
+            GridConfig::TAXON_TYPE,
+            GridConfig::INSTANT_TYPE,
         ));
     }
 }

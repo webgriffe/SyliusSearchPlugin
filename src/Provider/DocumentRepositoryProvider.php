@@ -11,7 +11,7 @@ class DocumentRepositoryProvider
     /** @param string[] $documentableClasses */
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private array $documentableClasses
+        private array $documentableClasses,
     ) {
     }
 

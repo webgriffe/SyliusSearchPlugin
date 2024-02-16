@@ -1,28 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MonsieurBiz\SyliusSearchPlugin\generated\Normalizer;
 
 use Jane\JsonSchemaRuntime\Reference;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class AttributesNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+
     public function supportsDenormalization($data, $type, $format = null)
     {
         return $type === 'MonsieurBiz\\SyliusSearchPlugin\\generated\\Model\\Attributes';
     }
+
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof \MonsieurBiz\SyliusSearchPlugin\generated\Model\Attributes;
     }
-    public function denormalize($data, $class, $format = null, array $context = array())
+
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!is_object($data)) {
             return null;
@@ -36,77 +41,70 @@ class AttributesNormalizer implements DenormalizerInterface, NormalizerInterface
         $object = new \MonsieurBiz\SyliusSearchPlugin\generated\Model\Attributes();
         if (property_exists($data, 'code') && $data->{'code'} !== null) {
             $object->setCode($data->{'code'});
-        }
-        elseif (property_exists($data, 'code') && $data->{'code'} === null) {
+        } elseif (property_exists($data, 'code') && $data->{'code'} === null) {
             $object->setCode(null);
         }
         if (property_exists($data, 'name') && $data->{'name'} !== null) {
             $object->setName($data->{'name'});
-        }
-        elseif (property_exists($data, 'name') && $data->{'name'} === null) {
+        } elseif (property_exists($data, 'name') && $data->{'name'} === null) {
             $object->setName(null);
         }
         if (property_exists($data, 'value') && $data->{'value'} !== null) {
-            $values = array();
+            $values = [];
             foreach ($data->{'value'} as $value) {
                 $values[] = $value;
             }
             $object->setValue($values);
-        }
-        elseif (property_exists($data, 'value') && $data->{'value'} === null) {
+        } elseif (property_exists($data, 'value') && $data->{'value'} === null) {
             $object->setValue(null);
         }
         if (property_exists($data, 'locale') && $data->{'locale'} !== null) {
             $object->setLocale($data->{'locale'});
-        }
-        elseif (property_exists($data, 'locale') && $data->{'locale'} === null) {
+        } elseif (property_exists($data, 'locale') && $data->{'locale'} === null) {
             $object->setLocale(null);
         }
         if (property_exists($data, 'score') && $data->{'score'} !== null) {
             $object->setScore($data->{'score'});
-        }
-        elseif (property_exists($data, 'score') && $data->{'score'} === null) {
+        } elseif (property_exists($data, 'score') && $data->{'score'} === null) {
             $object->setScore(null);
         }
+
         return $object;
     }
-    public function normalize($object, $format = null, array $context = array())
+
+    public function normalize($object, $format = null, array $context = [])
     {
         $data = new \stdClass();
         if (null !== $object->getCode()) {
             $data->{'code'} = $object->getCode();
-        }
-        else {
+        } else {
             $data->{'code'} = null;
         }
         if (null !== $object->getName()) {
             $data->{'name'} = $object->getName();
-        }
-        else {
+        } else {
             $data->{'name'} = null;
         }
         if (null !== $object->getValue()) {
-            $values = array();
+            $values = [];
             foreach ($object->getValue() as $value) {
                 $values[] = $value;
             }
             $data->{'value'} = $values;
-        }
-        else {
+        } else {
             $data->{'value'} = null;
         }
         if (null !== $object->getLocale()) {
             $data->{'locale'} = $object->getLocale();
-        }
-        else {
+        } else {
             $data->{'locale'} = null;
         }
         if (null !== $object->getScore()) {
             $data->{'score'} = $object->getScore();
-        }
-        else {
+        } else {
             $data->{'score'} = null;
         }
+
         return $data;
     }
 }

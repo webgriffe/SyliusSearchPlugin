@@ -6,7 +6,6 @@ namespace MonsieurBiz\SyliusSearchPlugin\Model\Document\Index;
 
 use Elastica\Exception\Connection\HttpException;
 use Elastica\Exception\ResponseException;
-use Elastica\Query;
 use JoliCode\Elastically\Client;
 use MonsieurBiz\SyliusSearchPlugin\Exception\ReadFileException;
 use MonsieurBiz\SyliusSearchPlugin\Helper\AggregationHelper;
@@ -27,7 +26,7 @@ class Search extends AbstractIndex
         Client $client,
         private SearchQueryProvider $searchQueryProvider,
         private ChannelContextInterface $channelContext,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
     ) {
         parent::__construct($client);
     }
@@ -103,7 +102,8 @@ class Search extends AbstractIndex
         if (isset($appliedFilters['bool']['filter'])) {
             // Will retrieve filters after we applied the current ones
             $query['query']['bool']['filter'] = array_merge(
-                $query['query']['bool']['filter'], $appliedFilters['bool']['filter']
+                $query['query']['bool']['filter'],
+                $appliedFilters['bool']['filter'],
             );
         } elseif ($appliedFilters !== []) {
             // Will retrieve filters before we applied the current ones
@@ -119,6 +119,7 @@ class Search extends AbstractIndex
         $channelCode = $this->channelContext->getChannel()->getCode();
         foreach ($gridConfig->getSorting() as $field => $order) {
             $query['sort'][] = SortHelper::getSortParamByField($field, $channelCode, $order);
+
             break; // only 1
         }
 
@@ -170,7 +171,8 @@ class Search extends AbstractIndex
         if (isset($appliedFilters['bool']['filter'])) {
             // Will retrieve filters after we applied the current ones
             $query['query']['bool']['filter'] = array_merge(
-                $query['query']['bool']['filter'], $appliedFilters['bool']['filter']
+                $query['query']['bool']['filter'],
+                $appliedFilters['bool']['filter'],
             );
         } elseif ($appliedFilters !== []) {
             // Will retrieve filters before we applied the current ones
@@ -186,6 +188,7 @@ class Search extends AbstractIndex
         $channelCode = $this->channelContext->getChannel()->getCode();
         foreach ($gridConfig->getSorting() as $field => $order) {
             $query['sort'][] = SortHelper::getSortParamByField($field, $channelCode, $order, $gridConfig->getTaxon()->getCode());
+
             break; // only 1
         }
 

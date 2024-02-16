@@ -29,7 +29,7 @@ class Indexer extends AbstractIndex
     public function __construct(
         Client $client,
         DocumentRepositoryProvider $documentRepositoryProvider,
-        private RepositoryInterface $localeRepository
+        private RepositoryInterface $localeRepository,
     ) {
         parent::__construct($client);
         $this->documentRepositoryProvider = $documentRepositoryProvider;
@@ -43,10 +43,10 @@ class Indexer extends AbstractIndex
         if ($this->locales === []) {
             $locales = $this->localeRepository->findAll();
             $this->locales = array_map(
-                static function(LocaleInterface $locale) {
+                static function (LocaleInterface $locale) {
                     return (string) $locale->getCode();
                 },
-                $locales
+                $locales,
             );
         }
 
@@ -96,7 +96,7 @@ class Indexer extends AbstractIndex
 
         $this->getIndexBuilder()->markAsLive(
             $newIndex,
-            $indexName
+            $indexName,
         );
 
         $this->getIndexer()->flush();
@@ -161,7 +161,7 @@ class Indexer extends AbstractIndex
     {
         $this->getIndexer()->scheduleDelete(
             $this->getClient()->getIndex($this->getIndexName($locale)),
-            $document->getUniqId()
+            $document->getUniqId(),
         );
     }
 }

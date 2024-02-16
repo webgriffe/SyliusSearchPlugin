@@ -11,7 +11,7 @@ use Twig\TwigFunction;
 class RenderDocumentUrl extends AbstractExtension
 {
     public function __construct(
-        private RenderDocumentUrlHelper $helper
+        private RenderDocumentUrlHelper $helper,
     ) {
     }
 

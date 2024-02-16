@@ -7,6 +7,7 @@ namespace MonsieurBiz\SyliusSearchPlugin\Helper;
 class AggregationHelper
 {
     public const MAX_AGGREGATED_ATTRIBUTES_INFO = 100;
+
     public const MAX_AGGREGATED_TAXON_INFO = 500;
 
     public static function buildAggregation(string $field): array
