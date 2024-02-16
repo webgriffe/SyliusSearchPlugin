@@ -62,70 +62,81 @@ class ResultSet
 
     private function initFilters(ElasticaResultSet $resultSet, ?TaxonInterface $taxon = null): void
     {
-        /** @var array{attributes: array, filters: array, taxons: array, mainTaxon: array, price: array} $aggregations */
+        /** @var array{attributes?: array, filters?: array, taxons?: array, mainTaxon?: array, price?: array} $aggregations */
         $aggregations = $resultSet->getAggregations();
 
         // Retrieve filters labels in aggregations
         /** @var array<string, string> $attributeNamesIndexedByCode */
         $attributeNamesIndexedByCode = [];
 
-        /** @var array{doc_count: int, codes: array} $attributeAggregations */
-        $attributeAggregations = $aggregations['attributes'];
-        unset($attributeAggregations['doc_count']);
+        if (array_key_exists('attributes', $aggregations)) {
+            /** @var array{doc_count: int, codes: array} $attributeAggregations */
+            $attributeAggregations = $aggregations['attributes'];
+            unset($attributeAggregations['doc_count']);
 
-        /** @var array{doc_count_error_upper_bound: int, sum_other_doc_count: int, buckets: array<array-key, array>} $attributeCodes */
-        $attributeCodes = $attributeAggregations['codes'];
-        /** @var array{key: string, doc_count: int, names: array} $attributeCodeBucket */
-        foreach ($attributeCodes['buckets'] as $attributeCodeBucket) {
-            $attributeCode = $attributeCodeBucket['key'];
-            /** @var array{doc_count_error_upper_bound: int, sum_other_doc_count: int, buckets: array<array-key, array>} $attributeNameTranslations */
-            $attributeNameTranslations = $attributeCodeBucket['names'];
-            /** @var array{key: string, doc_count: int} $attributeNameBucket */
-            foreach ($attributeNameTranslations['buckets'] as $attributeNameBucket) {
-                $attributeTranslationValue = $attributeNameBucket['key'];
-                $attributeNamesIndexedByCode[$attributeCode] = $attributeTranslationValue;
+            /** @var array{doc_count_error_upper_bound: int, sum_other_doc_count: int, buckets: array<array-key, array>} $attributeCodes */
+            $attributeCodes = $attributeAggregations['codes'];
+            /** @var array{key: string, doc_count: int, names: array} $attributeCodeBucket */
+            foreach ($attributeCodes['buckets'] as $attributeCodeBucket) {
+                $attributeCode = $attributeCodeBucket['key'];
+                /** @var array{doc_count_error_upper_bound: int, sum_other_doc_count: int, buckets: array<array-key, array>} $attributeNameTranslations */
+                $attributeNameTranslations = $attributeCodeBucket['names'];
+                /** @var array{key: string, doc_count: int} $attributeNameBucket */
+                foreach ($attributeNameTranslations['buckets'] as $attributeNameBucket) {
+                    $attributeTranslationValue = $attributeNameBucket['key'];
+                    $attributeNamesIndexedByCode[$attributeCode] = $attributeTranslationValue;
 
-                break;
+                    break;
+                }
             }
         }
 
         // Retrieve filters values in aggregations
-        /** @var array{doc_count: int} $filterAggregationsWithCount */
-        $filterAggregationsWithCount = $aggregations['filters'];
-        unset($filterAggregationsWithCount['doc_count']);
-        /** @var array<string, array{doc_count: int, values: array}> $filterAggregations */
-        $filterAggregations = $filterAggregationsWithCount;
-        foreach ($filterAggregations as $attributeCode => $aggregation) {
-            $resultsCount = $aggregation['doc_count'];
-            if (0 === $resultsCount) {
-                continue;
+        if (array_key_exists('filters', $aggregations)) {
+            /** @var array{doc_count: int} $filterAggregationsWithCount */
+            $filterAggregationsWithCount = $aggregations['filters'];
+            unset($filterAggregationsWithCount['doc_count']);
+            /** @var array<string, array{doc_count: int, values: array}> $filterAggregations */
+            $filterAggregations = $filterAggregationsWithCount;
+            foreach ($filterAggregations as $attributeCode => $aggregation) {
+                $resultsCount = $aggregation['doc_count'];
+                if (0 === $resultsCount) {
+                    continue;
+                }
+                $filter = new Filter(
+                    $attributeCode,
+                    $attributeNamesIndexedByCode[$attributeCode] ?? $attributeCode,
+                    $resultsCount,
+                );
+                /** @var array{doc_count_error_upper_bound: int, sum_other_doc_count: int, buckets: array<array-key, array>} $filterAttributeValues */
+                $filterAttributeValues = $aggregation['values'];
+                /** @var array{key: string, doc_count: int} $bucket */
+                foreach ($filterAttributeValues['buckets'] as $bucket) {
+                    $filter->addValue($bucket['key'], $bucket['doc_count']);
+                }
+                $this->filters[] = $filter;
             }
-            $filter = new Filter(
-                $attributeCode,
-                $attributeNamesIndexedByCode[$attributeCode] ?? $attributeCode,
-                $resultsCount,
-            );
-            /** @var array{doc_count_error_upper_bound: int, sum_other_doc_count: int, buckets: array<array-key, array>} $filterAttributeValues */
-            $filterAttributeValues = $aggregation['values'];
-            /** @var array{key: string, doc_count: int} $bucket */
-            foreach ($filterAttributeValues['buckets'] as $bucket) {
-                $filter->addValue($bucket['key'], $bucket['doc_count']);
-            }
-            $this->filters[] = $filter;
         }
+
         $this->sortFilters();
 
-        /** @var array{doc_count: int, codes: array} $taxonsAggregation */
-        $taxonsAggregation = $aggregations['taxons'];
-        $this->addTaxonFilter($taxonsAggregation, $taxon);
+        if (array_key_exists('taxons', $aggregations)) {
+            /** @var array{doc_count: int, codes: array} $taxonsAggregation */
+            $taxonsAggregation = $aggregations['taxons'];
+            $this->addTaxonFilter($taxonsAggregation, $taxon);
+        }
 
-        /** @var array{doc_count: int, codes: array} $mainTaxonAggregation */
-        $mainTaxonAggregation = $aggregations['mainTaxon'];
-        $this->addMainTaxonFilter($mainTaxonAggregation, $taxon);
+        if (array_key_exists('mainTaxon', $aggregations)) {
+            /** @var array{doc_count: int, codes: array} $mainTaxonAggregation */
+            $mainTaxonAggregation = $aggregations['mainTaxon'];
+            $this->addMainTaxonFilter($mainTaxonAggregation, $taxon);
+        }
 
-        /** @var array{doc_count: int, values: array{count: int, min: float, max: float, avg: float, sum: float}} $priceAggregation */
-        $priceAggregation = $aggregations['price'];
-        $this->addPriceFilter($priceAggregation);
+        if (array_key_exists('price', $aggregations)) {
+            /** @var array{doc_count: int, values: array{count: int, min: float, max: float, avg: float, sum: float}} $priceAggregation */
+            $priceAggregation = $aggregations['price'];
+            $this->addPriceFilter($priceAggregation);
+        }
     }
 
     /**
