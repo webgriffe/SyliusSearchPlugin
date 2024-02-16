@@ -9,9 +9,7 @@ use MonsieurBiz\SyliusSearchPlugin\Exception\MissingParamException;
 use MonsieurBiz\SyliusSearchPlugin\Exception\MissingPriceException;
 use MonsieurBiz\SyliusSearchPlugin\Exception\NotSupportedTypeException;
 use MonsieurBiz\SyliusSearchPlugin\generated\Model\Attributes;
-use MonsieurBiz\SyliusSearchPlugin\generated\Model\Document;
 use MonsieurBiz\SyliusSearchPlugin\generated\Model\Price;
-use MonsieurBiz\SyliusSearchPlugin\generated\Model\Taxon;
 use MonsieurBiz\SyliusSearchPlugin\Provider\UrlParamsProvider;
 
 interface ResultInterface

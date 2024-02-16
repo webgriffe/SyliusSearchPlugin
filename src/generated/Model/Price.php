@@ -1,115 +1,74 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MonsieurBiz\SyliusSearchPlugin\generated\Model;
 
 class Price
 {
-    /**
-     * 
-     *
-     * @var string|null
-     */
+    /** @var string|null */
     protected $channel;
-    /**
-     * 
-     *
-     * @var string|null
-     */
+
+    /** @var string|null */
     protected $currency;
-    /**
-     * 
-     *
-     * @var int|null
-     */
+
+    /** @var int|null */
     protected $value;
-    /**
-     * 
-     *
-     * @var string[]|null
-     */
+
+    /** @var string[]|null */
     protected $appliedPromotions;
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getChannel() : ?string
+
+    public function getChannel(): ?string
     {
         return $this->channel;
     }
-    /**
-     * 
-     *
-     * @param string|null $channel
-     *
-     * @return self
-     */
-    public function setChannel(?string $channel) : self
+
+    public function setChannel(?string $channel): self
     {
         $this->channel = $channel;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string|null
-     */
-    public function getCurrency() : ?string
+
+    public function getCurrency(): ?string
     {
         return $this->currency;
     }
-    /**
-     * 
-     *
-     * @param string|null $currency
-     *
-     * @return self
-     */
-    public function setCurrency(?string $currency) : self
+
+    public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return int|null
-     */
-    public function getValue() : ?int
+
+    public function getValue(): ?int
     {
         return $this->value;
     }
-    /**
-     * 
-     *
-     * @param int|null $value
-     *
-     * @return self
-     */
-    public function setValue(?int $value) : self
+
+    public function setValue(?int $value): self
     {
         $this->value = $value;
+
         return $this;
     }
+
     /**
-     * 
-     *
      * @return string[]|null
      */
-    public function getAppliedPromotions() : ?array
+    public function getAppliedPromotions(): ?array
     {
         return $this->appliedPromotions;
     }
+
     /**
-     * 
-     *
      * @param string[]|null $appliedPromotions
-     *
-     * @return self
      */
-    public function setAppliedPromotions(?array $appliedPromotions) : self
+    public function setAppliedPromotions(?array $appliedPromotions): self
     {
         $this->appliedPromotions = $appliedPromotions;
+
         return $this;
     }
 }

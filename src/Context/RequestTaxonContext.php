@@ -25,7 +25,7 @@ final class RequestTaxonContext implements TaxonContextInterface
     public function __construct(
         private RequestStack $requestStack,
         private TaxonRepositoryInterface $taxonRepository,
-        private LocaleContextInterface $localeContext
+        private LocaleContextInterface $localeContext,
     ) {
     }
 

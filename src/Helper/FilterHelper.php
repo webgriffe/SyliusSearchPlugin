@@ -7,7 +7,9 @@ namespace MonsieurBiz\SyliusSearchPlugin\Helper;
 class FilterHelper
 {
     public const MAIN_TAXON_FILTER = 'main_taxon';
+
     public const TAXON_FILTER = 'taxon';
+
     public const PRICE_FILTER = 'price';
 
     public static function buildFilters(array $appliedFilters): array
@@ -17,17 +19,21 @@ class FilterHelper
         }
 
         $filters = [];
+        /**
+         * @var string $field
+         * @var array $values
+         */
         foreach ($appliedFilters as $field => $values) {
             if (self::TAXON_FILTER === $field) {
                 $filters[] = self::buildTaxonFilter($values);
             } elseif (self::MAIN_TAXON_FILTER === $field) {
                 $filters[] = self::buildMainTaxonFilter($values);
             } elseif (self::PRICE_FILTER === $field) {
-                if (isset($values['min']) && isset($values['max'])) {
+                if (isset($values['min'], $values['max'])) {
                     $filters[] = self::buildPriceFilter((int) $values['min'], (int) $values['max']);
                 }
             } else {
-                $filters[] = self::buildFilter((string) $field, $values);
+                $filters[] = self::buildFilter($field, $values);
             }
         }
 

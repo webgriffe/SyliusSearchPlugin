@@ -16,7 +16,7 @@ abstract class AbstractIndex
     protected DocumentRepositoryProvider $documentRepositoryProvider;
 
     public function __construct(
-        private Client $client
+        private Client $client,
     ) {
     }
 

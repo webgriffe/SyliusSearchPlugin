@@ -6,6 +6,7 @@ namespace MonsieurBiz\SyliusSearchPlugin\Model;
 
 /**
  * @phpstan-ignore-next-line
+ *
  * @extends \ArrayObject<array-key, mixed>
  */
 class ArrayObject extends \ArrayObject

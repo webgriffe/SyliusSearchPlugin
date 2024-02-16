@@ -18,7 +18,7 @@ class RenderSearchForm extends AbstractExtension
     public function __construct(
         private FormFactoryInterface $formFactory,
         private Environment $templatingEngine,
-        private RequestStack $requestStack
+        private RequestStack $requestStack,
     ) {
     }
 
@@ -35,6 +35,7 @@ class RenderSearchForm extends AbstractExtension
 
         $currentRequest = $this->requestStack->getCurrentRequest();
         Assert::notNull($currentRequest);
+
         return new Markup($this->templatingEngine->render($template, [
             'form' => $this->formFactory->create(SearchType::class)->createView(),
             'query' => urldecode((string) ($currentRequest->get('query') ?? '')),

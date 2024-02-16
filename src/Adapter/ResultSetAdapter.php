@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Adapter;
 
+use function array_slice;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultInterface;
 use MonsieurBiz\SyliusSearchPlugin\Model\Document\ResultSet;
 use Pagerfanta\Adapter\AdapterInterface;
-use function array_slice;
 
 /**
  * @implements AdapterInterface<ResultInterface>

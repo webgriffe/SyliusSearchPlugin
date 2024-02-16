@@ -29,7 +29,7 @@ class SearchController extends AbstractController
         private CurrencyContextInterface $currencyContext,
         private TaxonContextInterface $taxonContext,
         private GridConfig $gridConfig,
-        private RenderDocumentUrlHelper $renderDocumentUrlHelper
+        private RenderDocumentUrlHelper $renderDocumentUrlHelper,
     ) {
     }
 
@@ -43,7 +43,7 @@ class SearchController extends AbstractController
         }
 
         return new RedirectResponse(
-            $this->generateUrl('monsieurbiz_sylius_search_search', ['query' => urlencode($query)])
+            $this->generateUrl('monsieurbiz_sylius_search_search', ['query' => urlencode($query)]),
         );
     }
 
@@ -60,6 +60,7 @@ class SearchController extends AbstractController
         if (1 === $resultSet->getTotalHits() && count($appliedFilters) === 0) {
             /** @var Result $document */
             $document = current($resultSet->getResults());
+
             try {
                 $urlParams = $this->renderDocumentUrlHelper->getUrlParams($document);
 

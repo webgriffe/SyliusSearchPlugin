@@ -6,9 +6,7 @@ namespace MonsieurBiz\SyliusSearchPlugin\Model\Document;
 
 class Filter
 {
-    /**
-     * @var FilterValue[]
-     */
+    /** @var FilterValue[] */
     private array $values = [];
 
     public function __construct(

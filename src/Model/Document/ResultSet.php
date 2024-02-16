@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace MonsieurBiz\SyliusSearchPlugin\Model\Document;
 
+use function count;
 use Elastica\ResultSet as ElasticaResultSet;
 use JoliCode\Elastically\Result;
 use MonsieurBiz\SyliusSearchPlugin\Adapter\ResultSetAdapter;
 use Pagerfanta\Pagerfanta;
 use Sylius\Component\Core\Model\TaxonInterface;
-use function count;
 
 class ResultSet
 {
@@ -84,6 +84,7 @@ class ResultSet
             foreach ($attributeNameTranslations['buckets'] as $attributeNameBucket) {
                 $attributeTranslationValue = $attributeNameBucket['key'];
                 $attributeNamesIndexedByCode[$attributeCode] = $attributeTranslationValue;
+
                 break;
             }
         }
@@ -104,7 +105,7 @@ class ResultSet
                 $attributeNamesIndexedByCode[$attributeCode] ?? $attributeCode,
                 $resultsCount,
             );
-            /** @var array{doc_count_error_upper_bound: int, sum_other_doc_count: int, buckets: array<array-key, array>} $buckets */
+            /** @var array{doc_count_error_upper_bound: int, sum_other_doc_count: int, buckets: array<array-key, array>} $filterAttributeValues */
             $filterAttributeValues = $aggregation['values'];
             /** @var array{key: string, doc_count: int} $bucket */
             foreach ($filterAttributeValues['buckets'] as $bucket) {
@@ -170,7 +171,7 @@ class ResultSet
 
     protected function sortFilters(): void
     {
-        usort($this->filters, static function(Filter $filter1, Filter $filter2): int {
+        usort($this->filters, static function (Filter $filter1, Filter $filter2): int {
             // If same count we display the filters with more values before
             if ($filter1->getCount() === $filter2->getCount()) {
                 return count($filter2->getValues()) > count($filter1->getValues()) ? 1 : -1;
@@ -228,6 +229,7 @@ class ResultSet
                     /** @var array{key: string, doc_count: int} $taxonNameBucket */
                     foreach ($taxonNames['buckets'] as $taxonNameBucket) {
                         $filter->addValue($taxonNameBucket['key'], $taxonCodeBucket['doc_count']);
+
                         break 2;
                     }
                 }
@@ -274,6 +276,7 @@ class ResultSet
                 foreach ($names['buckets'] as $taxonNameBucket) {
                     $taxonName = $taxonNameBucket['key'];
                     $filter->addValue($taxonName, $taxonCodeBucket['doc_count']);
+
                     break 2;
                 }
             }
@@ -299,7 +302,7 @@ class ResultSet
             'monsieurbiz_searchplugin.filters.price_min',
             'monsieurbiz_searchplugin.filters.price_max',
             (int) floor(($priceAggregation['values']['min'] ?? 0) / 100),
-            (int) ceil(($priceAggregation['values']['max'] ?? 0) / 100)
+            (int) ceil(($priceAggregation['values']['max'] ?? 0) / 100),
         );
     }
 }

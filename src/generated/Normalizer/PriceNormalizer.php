@@ -1,28 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MonsieurBiz\SyliusSearchPlugin\generated\Normalizer;
 
 use Jane\JsonSchemaRuntime\Reference;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 class PriceNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+
     public function supportsDenormalization($data, $type, $format = null)
     {
         return $type === 'MonsieurBiz\\SyliusSearchPlugin\\generated\\Model\\Price';
     }
+
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof \MonsieurBiz\SyliusSearchPlugin\generated\Model\Price;
     }
-    public function denormalize($data, $class, $format = null, array $context = array())
+
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!is_object($data)) {
             return null;
@@ -36,65 +41,60 @@ class PriceNormalizer implements DenormalizerInterface, NormalizerInterface, Den
         $object = new \MonsieurBiz\SyliusSearchPlugin\generated\Model\Price();
         if (property_exists($data, 'channel') && $data->{'channel'} !== null) {
             $object->setChannel($data->{'channel'});
-        }
-        elseif (property_exists($data, 'channel') && $data->{'channel'} === null) {
+        } elseif (property_exists($data, 'channel') && $data->{'channel'} === null) {
             $object->setChannel(null);
         }
         if (property_exists($data, 'currency') && $data->{'currency'} !== null) {
             $object->setCurrency($data->{'currency'});
-        }
-        elseif (property_exists($data, 'currency') && $data->{'currency'} === null) {
+        } elseif (property_exists($data, 'currency') && $data->{'currency'} === null) {
             $object->setCurrency(null);
         }
         if (property_exists($data, 'value') && $data->{'value'} !== null) {
             $object->setValue($data->{'value'});
-        }
-        elseif (property_exists($data, 'value') && $data->{'value'} === null) {
+        } elseif (property_exists($data, 'value') && $data->{'value'} === null) {
             $object->setValue(null);
         }
         if (property_exists($data, 'appliedPromotions') && $data->{'appliedPromotions'} !== null) {
-            $values = array();
+            $values = [];
             foreach ($data->{'appliedPromotions'} as $value) {
                 $values[] = $value;
             }
             $object->setAppliedPromotions($values);
-        }
-        elseif (property_exists($data, 'appliedPromotions') && $data->{'appliedPromotions'} === null) {
+        } elseif (property_exists($data, 'appliedPromotions') && $data->{'appliedPromotions'} === null) {
             $object->setAppliedPromotions(null);
         }
+
         return $object;
     }
-    public function normalize($object, $format = null, array $context = array())
+
+    public function normalize($object, $format = null, array $context = [])
     {
         $data = new \stdClass();
         if (null !== $object->getChannel()) {
             $data->{'channel'} = $object->getChannel();
-        }
-        else {
+        } else {
             $data->{'channel'} = null;
         }
         if (null !== $object->getCurrency()) {
             $data->{'currency'} = $object->getCurrency();
-        }
-        else {
+        } else {
             $data->{'currency'} = null;
         }
         if (null !== $object->getValue()) {
             $data->{'value'} = $object->getValue();
-        }
-        else {
+        } else {
             $data->{'value'} = null;
         }
         if (null !== $object->getAppliedPromotions()) {
-            $values = array();
+            $values = [];
             foreach ($object->getAppliedPromotions() as $value) {
                 $values[] = $value;
             }
             $data->{'appliedPromotions'} = $values;
-        }
-        else {
+        } else {
             $data->{'appliedPromotions'} = null;
         }
+
         return $data;
     }
 }
